@@ -1,11 +1,18 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import BottomNav from '@/components/layout/BottomNav'
 
 export const metadata: Metadata = {
   title: 'Rent Market AE — Dubai Car Rental Marketplace',
-  description: 'Browse and book from Dubai\'s top car rental providers. Sports cars, SUVs, luxury and exotic vehicles available with daily, weekly and monthly rates.',
+  description: 'Browse and book from Dubai\'s top car rental providers. Sports cars, SUVs, luxury and exotic vehicles — daily, weekly and monthly rates.',
   keywords: 'car rental dubai, rent car dubai, sports car rental, SUV rental dubai, luxury car rental UAE',
+  applicationName: 'Rent Market AE',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 }
 
 export default function RootLayout({

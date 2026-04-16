@@ -1,25 +1,33 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Header from '@/components/layout/Header'
 import CarCard from '@/components/home/CarCard'
 import { cars, providers } from '@/lib/data'
-import { Car, CategoryFilter, DepositFilter, SortOption } from '@/lib/types'
+import { CategoryFilter, DepositFilter, SortOption } from '@/lib/types'
 
 const CATEGORIES: CategoryFilter[] = ['All', 'Economy', 'SUV', 'Luxury', 'Sports', 'Exotic']
 
-export default function ShopPage() {
-  const [search, setSearch] = useState('')
-  const [selectedProvider, setSelectedProvider] = useState<string>('all')
-  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('All')
-  const [depositFilter, setDepositFilter] = useState<DepositFilter>('all')
-  const [availableOnly, setAvailableOnly] = useState(false)
-  const [sort, setSort] = useState<SortOption>('default')
+function ShopContent() {
+  const searchParams = useSearchParams()
+  const initialProvider = searchParams.get('provider') || 'all'
+
+  const [search, setSearch]                     = useState('')
+  const [selectedProvider, setSelectedProvider]  = useState<string>(initialProvider)
+  const [selectedCategory, setSelectedCategory]  = useState<CategoryFilter>('All')
+  const [depositFilter, setDepositFilter]        = useState<DepositFilter>('all')
+  const [availableOnly, setAvailableOnly]        = useState(false)
+  const [sort, setSort]                          = useState<SortOption>('default')
+
+  // Sync if URL param changes (e.g. navigating from ProviderPromo)
+  useEffect(() => {
+    setSelectedProvider(searchParams.get('provider') || 'all')
+  }, [searchParams])
 
   const filteredCars = useMemo(() => {
     let result = [...cars]
 
-    // Search
     if (search) {
       const q = search.toLowerCase()
       result = result.filter(
@@ -30,33 +38,12 @@ export default function ShopPage() {
           c.category.toLowerCase().includes(q)
       )
     }
-
-    // Provider
-    if (selectedProvider !== 'all') {
-      result = result.filter((c) => c.providerId === selectedProvider)
-    }
-
-    // Category
-    if (selectedCategory !== 'All') {
-      result = result.filter((c) => c.category === selectedCategory)
-    }
-
-    // Deposit
-    if (depositFilter !== 'all') {
-      result = result.filter((c) => c.depositType === depositFilter)
-    }
-
-    // Available
-    if (availableOnly) {
-      result = result.filter((c) => c.availableNow)
-    }
-
-    // Sort
-    if (sort === 'price-asc') {
-      result.sort((a, b) => a.dailyPrice - b.dailyPrice)
-    } else if (sort === 'price-desc') {
-      result.sort((a, b) => b.dailyPrice - a.dailyPrice)
-    }
+    if (selectedProvider !== 'all') result = result.filter((c) => c.providerId === selectedProvider)
+    if (selectedCategory !== 'All') result = result.filter((c) => c.category === selectedCategory)
+    if (depositFilter !== 'all')    result = result.filter((c) => c.depositType === depositFilter)
+    if (availableOnly)              result = result.filter((c) => c.availableNow)
+    if (sort === 'price-asc')       result.sort((a, b) => a.dailyPrice - b.dailyPrice)
+    if (sort === 'price-desc')      result.sort((a, b) => b.dailyPrice - a.dailyPrice)
 
     return result
   }, [search, selectedProvider, selectedCategory, depositFilter, availableOnly, sort])
@@ -74,22 +61,27 @@ export default function ShopPage() {
     setDepositFilter('all')
     setAvailableOnly(false)
     setSort('default')
+    setSearch('')
   }
+
+  const activeProviderName = providers.find((p) => p.id === selectedProvider)?.name
 
   return (
     <div className="min-h-screen pb-20">
       <Header showSearch onSearchChange={setSearch} />
 
-      {/* Page title */}
-      <div className="px-4 pt-4 pb-2 flex items-center justify-between">
+      {/* Page header */}
+      <div className="px-4 pt-4 pb-3 flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-stone-900">Browse Cars</h1>
-          <p className="text-xs text-stone-500">{filteredCars.length} cars available</p>
+          <h1 className="text-lg font-bold text-stone-900">
+            {activeProviderName ? `${activeProviderName} Fleet` : 'Browse Cars'}
+          </h1>
+          <p className="text-xs text-stone-500 mt-0.5">{filteredCars.length} cars available</p>
         </div>
         {activeFilterCount > 0 && (
           <button
             onClick={clearFilters}
-            className="text-xs font-semibold text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full"
+            className="text-xs font-semibold text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-full"
           >
             Clear {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''}
           </button>
@@ -99,9 +91,8 @@ export default function ShopPage() {
       {/* Search bar */}
       <div className="px-4 mb-3">
         <div className="flex items-center gap-2 bg-white border border-stone-200 rounded-2xl px-4 py-2.5 shadow-sm">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-stone-400 flex-shrink-0">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-stone-400 flex-shrink-0">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <input
             type="text"
@@ -113,16 +104,15 @@ export default function ShopPage() {
           {search && (
             <button onClick={() => setSearch('')} className="text-stone-400 hover:text-stone-600">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
             </button>
           )}
         </div>
       </div>
 
-      {/* Provider filter */}
-      <div className="overflow-x-auto scrollbar-hide px-4 mb-3">
+      {/* Provider chips */}
+      <div className="overflow-x-auto scrollbar-hide px-4 mb-2.5">
         <div className="flex gap-2 w-max">
           <button
             onClick={() => setSelectedProvider('all')}
@@ -132,7 +122,7 @@ export default function ShopPage() {
                 : 'bg-white text-stone-600 border-stone-200'
             }`}
           >
-            All Providers
+            All
           </button>
           {providers.map((p) => (
             <button
@@ -150,8 +140,8 @@ export default function ShopPage() {
         </div>
       </div>
 
-      {/* Category filter */}
-      <div className="overflow-x-auto scrollbar-hide px-4 mb-3">
+      {/* Category chips */}
+      <div className="overflow-x-auto scrollbar-hide px-4 mb-2.5">
         <div className="flex gap-2 w-max">
           {CATEGORIES.map((cat) => (
             <button
@@ -169,13 +159,10 @@ export default function ShopPage() {
         </div>
       </div>
 
-      {/* Second row filters */}
-      <div className="px-4 mb-4 flex gap-2 flex-wrap">
-        {/* Deposit filter */}
+      {/* Utility row */}
+      <div className="px-4 mb-4 flex items-center gap-2 flex-wrap">
         <button
-          onClick={() =>
-            setDepositFilter(depositFilter === 'no-deposit' ? 'all' : 'no-deposit')
-          }
+          onClick={() => setDepositFilter(depositFilter === 'no-deposit' ? 'all' : 'no-deposit')}
           className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
             depositFilter === 'no-deposit'
               ? 'bg-emerald-500 text-white border-emerald-500'
@@ -194,12 +181,11 @@ export default function ShopPage() {
         >
           Available Now
         </button>
-
-        {/* Sort */}
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as SortOption)}
-          className="ml-auto text-xs font-semibold px-3 py-1.5 rounded-full border border-stone-200 bg-white text-stone-600 outline-none"
+          className="ml-auto text-xs font-semibold px-3 py-1.5 rounded-full border border-stone-200 bg-white text-stone-600 outline-none appearance-none pr-6"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a8a29e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}
         >
           <option value="default">Sort: Default</option>
           <option value="price-asc">Price: Low → High</option>
@@ -207,16 +193,20 @@ export default function ShopPage() {
         </select>
       </div>
 
-      {/* Car grid */}
+      {/* Results */}
       <div className="px-4">
         {filteredCars.length === 0 ? (
-          <div className="text-center py-16 text-stone-400">
-            <div className="text-5xl mb-4">🔍</div>
-            <p className="text-base font-semibold text-stone-600">No cars found</p>
-            <p className="text-sm mt-1">Try adjusting your filters</p>
+          <div className="text-center py-16">
+            <div className="w-14 h-14 rounded-2xl bg-stone-100 flex items-center justify-center mx-auto mb-4">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a8a29e" strokeWidth="1.6" strokeLinecap="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </div>
+            <p className="text-base font-semibold text-stone-700">No cars found</p>
+            <p className="text-sm mt-1 text-stone-400">Try adjusting your filters</p>
             <button
               onClick={clearFilters}
-              className="mt-4 bg-amber-500 text-white text-sm font-bold px-5 py-2.5 rounded-xl"
+              className="mt-5 bg-amber-500 text-white text-sm font-bold px-6 py-2.5 rounded-xl"
             >
               Clear Filters
             </button>
@@ -230,5 +220,17 @@ export default function ShopPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <ShopContent />
+    </Suspense>
   )
 }

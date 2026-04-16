@@ -9,7 +9,6 @@ import CarSection from '@/components/home/CarSection'
 import CarCard from '@/components/home/CarCard'
 import {
   cars,
-  providers,
   getHotDeals,
   getPopularCars,
   getNewArrivals,
