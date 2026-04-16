@@ -64,7 +64,6 @@ export default function HomePage() {
         {hotDeals.length > 0 && (
           <CarSection
             title="Hot Deals"
-            emoji="🔥"
             cars={hotDeals}
             horizontal
           />
@@ -73,8 +72,7 @@ export default function HomePage() {
         {/* Popular Cars */}
         {popularCars.length > 0 && (
           <CarSection
-            title="Popular Cars"
-            emoji="⭐"
+            title="Popular Picks"
             cars={popularCars}
             horizontal
           />
@@ -84,7 +82,6 @@ export default function HomePage() {
         {newArrivals.length > 0 && (
           <CarSection
             title="New Arrivals"
-            emoji="✨"
             cars={newArrivals}
             horizontal
           />

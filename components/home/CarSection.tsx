@@ -6,7 +6,6 @@ import CarCard from './CarCard'
 
 interface CarSectionProps {
   title: string
-  emoji?: string
   cars: Car[]
   viewAllHref?: string
   horizontal?: boolean
@@ -14,7 +13,6 @@ interface CarSectionProps {
 
 export default function CarSection({
   title,
-  emoji,
   cars,
   viewAllHref = '/shop',
   horizontal = false,
@@ -24,18 +22,12 @@ export default function CarSection({
   if (horizontal) {
     return (
       <div className="mb-6">
-        {/* Header */}
         <div className="flex items-center justify-between px-4 mb-3">
-          <h2 className="font-bold text-stone-900 text-sm">
-            {emoji && <span className="mr-1.5">{emoji}</span>}
-            {title}
-          </h2>
+          <h2 className="font-bold text-stone-900 text-sm">{title}</h2>
           <Link href={viewAllHref} className="text-amber-600 text-[11px] font-bold">
             See All
           </Link>
         </div>
-
-        {/* Horizontal scroll */}
         <div className="overflow-x-auto scrollbar-hide pl-4 pr-2">
           <div className="flex gap-3 w-max pr-2">
             {cars.map((car) => (
@@ -51,18 +43,12 @@ export default function CarSection({
 
   return (
     <div className="mb-6 px-4">
-      {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h2 className="font-bold text-stone-900 text-sm">
-          {emoji && <span className="mr-1.5">{emoji}</span>}
-          {title}
-        </h2>
+        <h2 className="font-bold text-stone-900 text-sm">{title}</h2>
         <Link href={viewAllHref} className="text-amber-600 text-[11px] font-bold">
           See All
         </Link>
       </div>
-
-      {/* Grid */}
       <div className="grid grid-cols-2 gap-3">
         {cars.slice(0, 4).map((car) => (
           <CarCard key={car.id} car={car} compact />
