@@ -2,7 +2,6 @@ export interface Provider {
   id: string
   name: string
   tagline: string
-  badge: string
   promoTitle: string
   promoText: string
   featured: boolean
@@ -23,17 +22,20 @@ export interface Car {
   depositType: 'no-deposit' | 'deposit'
   depositAmount?: number
   availableNow: boolean
-  transmission: 'Automatic' | 'Manual'
+  transmission: string
   seats: number
-  fuelType: 'Petrol' | 'Diesel' | 'Electric' | 'Hybrid'
+  fuelType: string
   image: string
   isHotDeal: boolean
   isPopular: boolean
   isNewArrival: boolean
   shortDescription: string
   features: string[]
+  highlights: string[]
+  rating: number
+  reviewCount: number
 }
 
 export type CategoryFilter = 'All' | 'Economy' | 'SUV' | 'Luxury' | 'Sports' | 'Exotic'
 export type DepositFilter = 'all' | 'no-deposit' | 'deposit'
-export type SortOption = 'default' | 'price-asc' | 'price-desc'
+export type SortOption = 'default' | 'price-asc' | 'price-desc' | 'rating'

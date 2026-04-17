@@ -13,14 +13,13 @@ function ShopContent() {
   const searchParams = useSearchParams()
   const initialProvider = searchParams.get('provider') || 'all'
 
-  const [search, setSearch]                     = useState('')
-  const [selectedProvider, setSelectedProvider]  = useState<string>(initialProvider)
-  const [selectedCategory, setSelectedCategory]  = useState<CategoryFilter>('All')
-  const [depositFilter, setDepositFilter]        = useState<DepositFilter>('all')
-  const [availableOnly, setAvailableOnly]        = useState(false)
-  const [sort, setSort]                          = useState<SortOption>('default')
+  const [search, setSearch]                    = useState('')
+  const [selectedProvider, setSelectedProvider] = useState<string>(initialProvider)
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('All')
+  const [depositFilter, setDepositFilter]       = useState<DepositFilter>('all')
+  const [availableOnly, setAvailableOnly]       = useState(false)
+  const [sort, setSort]                         = useState<SortOption>('default')
 
-  // Sync if URL param changes (e.g. navigating from ProviderPromo)
   useEffect(() => {
     setSelectedProvider(searchParams.get('provider') || 'all')
   }, [searchParams])
@@ -42,8 +41,10 @@ function ShopContent() {
     if (selectedCategory !== 'All') result = result.filter((c) => c.category === selectedCategory)
     if (depositFilter !== 'all')    result = result.filter((c) => c.depositType === depositFilter)
     if (availableOnly)              result = result.filter((c) => c.availableNow)
-    if (sort === 'price-asc')       result.sort((a, b) => a.dailyPrice - b.dailyPrice)
-    if (sort === 'price-desc')      result.sort((a, b) => b.dailyPrice - a.dailyPrice)
+
+    if (sort === 'price-asc')  result.sort((a, b) => a.dailyPrice - b.dailyPrice)
+    if (sort === 'price-desc') result.sort((a, b) => b.dailyPrice - a.dailyPrice)
+    if (sort === 'rating')     result.sort((a, b) => b.rating - a.rating)
 
     return result
   }, [search, selectedProvider, selectedCategory, depositFilter, availableOnly, sort])
@@ -73,15 +74,15 @@ function ShopContent() {
       {/* Page header */}
       <div className="px-4 pt-4 pb-3 flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-stone-900">
+          <h1 className="text-lg font-black text-stone-900 leading-tight">
             {activeProviderName ? `${activeProviderName} Fleet` : 'Browse Cars'}
           </h1>
-          <p className="text-xs text-stone-500 mt-0.5">{filteredCars.length} cars available</p>
+          <p className="text-xs text-stone-400 mt-0.5 font-medium">{filteredCars.length} cars available</p>
         </div>
         {activeFilterCount > 0 && (
           <button
             onClick={clearFilters}
-            className="text-xs font-semibold text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-full"
+            className="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-full"
           >
             Clear {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''}
           </button>
@@ -90,8 +91,8 @@ function ShopContent() {
 
       {/* Search bar */}
       <div className="px-4 mb-3">
-        <div className="flex items-center gap-2 bg-white border border-stone-200 rounded-2xl px-4 py-2.5 shadow-sm">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-stone-400 flex-shrink-0">
+        <div className="flex items-center gap-2.5 bg-white border border-stone-200 rounded-2xl px-4 py-2.5 shadow-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8a29e" strokeWidth="2" strokeLinecap="round">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <input
@@ -102,8 +103,8 @@ function ShopContent() {
             className="flex-1 bg-transparent text-sm text-stone-900 placeholder-stone-400 outline-none"
           />
           {search && (
-            <button onClick={() => setSearch('')} className="text-stone-400 hover:text-stone-600">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <button onClick={() => setSearch('')} className="text-stone-400">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
             </button>
@@ -116,7 +117,7 @@ function ShopContent() {
         <div className="flex gap-2 w-max">
           <button
             onClick={() => setSelectedProvider('all')}
-            className={`flex-shrink-0 text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-all ${
+            className={`flex-shrink-0 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
               selectedProvider === 'all'
                 ? 'bg-stone-900 text-white border-stone-900'
                 : 'bg-white text-stone-600 border-stone-200'
@@ -128,7 +129,7 @@ function ShopContent() {
             <button
               key={p.id}
               onClick={() => setSelectedProvider(selectedProvider === p.id ? 'all' : p.id)}
-              className={`flex-shrink-0 text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-all ${
+              className={`flex-shrink-0 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
                 selectedProvider === p.id
                   ? 'bg-amber-500 text-white border-amber-500'
                   : 'bg-white text-stone-600 border-stone-200'
@@ -147,7 +148,7 @@ function ShopContent() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`flex-shrink-0 text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-all ${
+              className={`flex-shrink-0 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
                 selectedCategory === cat
                   ? 'bg-amber-500 text-white border-amber-500'
                   : 'bg-white text-stone-600 border-stone-200'
@@ -163,7 +164,7 @@ function ShopContent() {
       <div className="px-4 mb-4 flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setDepositFilter(depositFilter === 'no-deposit' ? 'all' : 'no-deposit')}
-          className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
+          className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${
             depositFilter === 'no-deposit'
               ? 'bg-emerald-500 text-white border-emerald-500'
               : 'bg-white text-stone-600 border-stone-200'
@@ -173,7 +174,7 @@ function ShopContent() {
         </button>
         <button
           onClick={() => setAvailableOnly(!availableOnly)}
-          className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
+          className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${
             availableOnly
               ? 'bg-blue-500 text-white border-blue-500'
               : 'bg-white text-stone-600 border-stone-200'
@@ -184,10 +185,15 @@ function ShopContent() {
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as SortOption)}
-          className="ml-auto text-xs font-semibold px-3 py-1.5 rounded-full border border-stone-200 bg-white text-stone-600 outline-none appearance-none pr-6"
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a8a29e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}
+          className="ml-auto text-xs font-bold px-3 py-1.5 rounded-full border border-stone-200 bg-white text-stone-600 outline-none appearance-none pr-7"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a8a29e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'right 10px center',
+          }}
         >
           <option value="default">Sort: Default</option>
+          <option value="rating">Highest Rated</option>
           <option value="price-asc">Price: Low → High</option>
           <option value="price-desc">Price: High → Low</option>
         </select>
@@ -202,7 +208,7 @@ function ShopContent() {
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
             </div>
-            <p className="text-base font-semibold text-stone-700">No cars found</p>
+            <p className="text-base font-bold text-stone-700">No cars found</p>
             <p className="text-sm mt-1 text-stone-400">Try adjusting your filters</p>
             <button
               onClick={clearFilters}

@@ -6,8 +6,11 @@
   --max-app-width: 480px;
 }
 
+/* ── Base ─────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -16,9 +19,16 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  text-rendering: optimizeLegibility;
 }
 
-/* Hide scrollbar but allow scrolling */
+/* ── Tap highlight ────────────────────────────── */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Scrollbar hide ───────────────────────────── */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -27,21 +37,70 @@ body {
   display: none;
 }
 
-/* Safe area for bottom nav on iOS */
+/* ── Safe area ────────────────────────────────── */
 .pb-safe {
   padding-bottom: max(80px, env(safe-area-inset-bottom));
 }
 
-/* Smooth transitions */
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Button active states */
+/* ── Press feedback ───────────────────────────── */
 button:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+a:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
 }
 
-a:active {
-  transform: scale(0.98);
+/* ── Card hover lift ──────────────────────────── */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
+}
+
+/* ── Category ambient shadows ─────────────────── */
+.shadow-sports  { box-shadow: 0 2px 16px rgba(245, 158, 11, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
+.shadow-exotic  { box-shadow: 0 2px 16px rgba(244, 63,  94, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
+.shadow-luxury  { box-shadow: 0 2px 16px rgba(139, 92, 246, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
+.shadow-suv     { box-shadow: 0 2px 16px rgba(59,  130, 246, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
+.shadow-economy { box-shadow: 0 2px 16px rgba(16,  185, 129, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
+
+/* ── Animations ───────────────────────────────── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slideUp 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fadeIn 0.25s ease forwards;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.3); }
+}
+.animate-pulse-dot {
+  animation: pulseDot 1.8s ease-in-out infinite;
+}
+
+/* ── Input base ───────────────────────────────── */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+/* ── Image smooth load ────────────────────────── */
+img {
+  transition: opacity 0.25s ease;
 }
