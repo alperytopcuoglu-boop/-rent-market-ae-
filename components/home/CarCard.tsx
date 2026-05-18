@@ -100,7 +100,7 @@ export default function CarCard({ car, compact = false }: CarCardProps) {
             <div className="flex items-center gap-1.5">
               {/* WhatsApp */}
               <a
-                href={`https://wa.me/971501234567?text=${waText}`}
+                href={`https://wa.me/971556755532?text=${waText}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
