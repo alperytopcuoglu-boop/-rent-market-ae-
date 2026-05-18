@@ -13,7 +13,7 @@ const slides = [
     cta: 'Explore Cars',
     ctaHref: '/shop',
     ctaSecondary: 'Book on WhatsApp',
-    ctaSecondaryHref: 'https://wa.me/971501234567',
+    ctaSecondaryHref: 'https://wa.me/971556755532',
     image: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -35,7 +35,7 @@ const slides = [
     cta: 'View Exotic Cars',
     ctaHref: '/shop',
     ctaSecondary: 'Book on WhatsApp',
-    ctaSecondaryHref: 'https://wa.me/971501234567',
+    ctaSecondaryHref: 'https://wa.me/971556755532',
     image: 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -46,7 +46,7 @@ const slides = [
     cta: 'See Weekend Deals',
     ctaHref: '/shop',
     ctaSecondary: 'Book on WhatsApp',
-    ctaSecondaryHref: 'https://wa.me/971501234567',
+    ctaSecondaryHref: 'https://wa.me/971556755532',
     image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
   },
   {
