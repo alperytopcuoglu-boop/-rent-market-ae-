@@ -36,7 +36,7 @@ export default function ProviderPromo({ provider }: { provider: Provider }) {
       {/* Actions */}
       <div className="flex gap-2">
         <a
-          href={`https://wa.me/971501234567?text=Hi, I'd like to inquire about ${provider.name} rental offers`}
+          href={`https://wa.me/971556755532?text=Hi, I'd like to inquire about ${provider.name} rental offers`}
           target="_blank"
           rel="noopener noreferrer"
           className={`flex items-center gap-1.5 ${colors.button} text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-colors`}
