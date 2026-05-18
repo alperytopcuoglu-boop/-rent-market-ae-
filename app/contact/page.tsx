@@ -33,7 +33,7 @@ export default function ContactPage() {
       {/* WhatsApp — primary CTA */}
       <div className="mx-4 mb-4">
         <a
-          href="https://wa.me/971501234567?text=Hi, I'd like to inquire about a car rental."
+          href="https://wa.me/971556755532?text=Hi, I'd like to inquire about a car rental."
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between bg-green-500 text-white rounded-2xl p-4 shadow-sm hover:bg-green-600 transition-colors"
@@ -59,7 +59,7 @@ export default function ContactPage() {
       <div className="px-4 mb-5 grid grid-cols-2 gap-3">
         {/* Call */}
         <a
-          href="tel:+971501234567"
+          href="tel:+971556755532"
           className="flex items-center gap-3 bg-white rounded-2xl p-3.5 border border-stone-100 shadow-sm"
         >
           <div className="w-9 h-9 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -69,7 +69,7 @@ export default function ContactPage() {
           </div>
           <div>
             <p className="font-bold text-stone-900 text-sm">Call Now</p>
-            <p className="text-[11px] text-stone-400">+971 50 123 4567</p>
+            <p className="text-[11px] text-stone-400">+971 55 675 5532</p>
           </div>
         </a>
 
