@@ -56,7 +56,7 @@ export default function Header({ showSearch = false, onSearchChange }: HeaderPro
 
           {/* WhatsApp quick contact */}
           <a
-            href="https://wa.me/971501234567"
+            href="https://wa.me/971556755532"
             target="_blank"
             rel="noopener noreferrer"
             className="w-9 h-9 flex items-center justify-center rounded-full bg-green-50 hover:bg-green-100 transition-colors"
