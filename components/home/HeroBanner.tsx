@@ -99,8 +99,10 @@ export default function HeroBanner() {
             src={s.image}
             alt={s.headline}
             fill
+            sizes="(max-width: 480px) 100vw, 480px"
             className="object-cover"
             priority={i === 0}
+            unoptimized
           />
           {/* Gradient: stronger on left for text legibility */}
           <div className="absolute inset-0 bg-gradient-to-r from-stone-900/72 via-stone-900/38 to-transparent" />

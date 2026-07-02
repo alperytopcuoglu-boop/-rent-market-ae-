@@ -88,8 +88,10 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
           src={car.image}
           alt={`${car.brand} ${car.model}`}
           fill
+          sizes="(max-width: 480px) 100vw, 480px"
           className="object-cover"
           priority
+          unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/30 to-black/10" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/25 to-transparent" />
