@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Space_Grotesk } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import BottomNav from '@/components/layout/BottomNav'
@@ -8,6 +8,13 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-display',
+  weight: ['500', '600', '700'],
 })
 
 export const metadata: Metadata = {
@@ -86,7 +93,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${inter.className} bg-stone-50 min-h-screen`}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} ${inter.className} bg-[#faf9f7] min-h-screen`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
@@ -97,7 +104,7 @@ export default function RootLayout({
           />
         </noscript>
 
-        <main className="max-w-[480px] mx-auto relative bg-stone-50 min-h-screen shadow-[0_0_40px_rgba(0,0,0,0.08)]">
+        <main className="relative bg-[#faf9f7] min-h-screen">
           {children}
           <BottomNav />
         </main>

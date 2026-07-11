@@ -11,10 +11,10 @@ interface CarSectionProps {
   horizontal?: boolean
 }
 
-const sectionMeta: Record<string, { dot: string }> = {
-  'Hot Deals':     { dot: 'bg-rose-500'    },
-  'Popular Picks': { dot: 'bg-amber-500'   },
-  'New Arrivals':  { dot: 'bg-emerald-500' },
+const sectionMeta: Record<string, { label: string }> = {
+  'Hot Deals':     { label: 'Limited Time' },
+  'Popular Picks': { label: 'Most Booked' },
+  'New Arrivals':  { label: 'Just Landed' },
 }
 
 export default function CarSection({
@@ -25,16 +25,17 @@ export default function CarSection({
 }: CarSectionProps) {
   if (cars.length === 0) return null
 
-  const meta = sectionMeta[title] || { dot: 'bg-stone-400' }
+  const meta = sectionMeta[title] || { label: 'Collection' }
 
   const header = (
-    <div className="flex items-center justify-between px-4 mb-3">
-      <div className="flex items-center gap-2">
-        <span className={`w-2 h-2 rounded-full flex-shrink-0 ${meta.dot}`} />
-        <h2 className="font-bold text-stone-900 text-[15px] leading-none">{title}</h2>
-        <span className="text-[11px] text-stone-400 font-medium">({cars.length})</span>
+    <div className="flex items-end justify-between px-5 mb-5">
+      <div>
+        <p className="section-label">{meta.label}</p>
+        <h2 className="font-display font-bold text-stone-900 text-xl md:text-2xl mt-1 leading-none">
+          {title} <span className="text-stone-400 text-sm font-medium">({cars.length})</span>
+        </h2>
       </div>
-      <Link href={viewAllHref} className="text-amber-600 text-[11px] font-bold">
+      <Link href={viewAllHref} className="text-gold text-[11px] font-bold tracking-[0.12em] uppercase">
         See All →
       </Link>
     </div>
@@ -42,12 +43,12 @@ export default function CarSection({
 
   if (horizontal) {
     return (
-      <div className="mb-6">
+      <div className="mb-12">
         {header}
-        <div className="overflow-x-auto scrollbar-hide px-4">
-          <div className="flex gap-3 w-max pb-1">
+        <div className="overflow-x-auto scrollbar-hide px-5">
+          <div className="flex gap-4 md:gap-5 w-max pb-1">
             {cars.map((car) => (
-              <div key={car.id} className="w-[178px] flex-shrink-0">
+              <div key={car.id} className="w-[200px] md:w-[260px] flex-shrink-0">
                 <CarCard car={car} compact />
               </div>
             ))}
@@ -58,9 +59,9 @@ export default function CarSection({
   }
 
   return (
-    <div className="mb-6">
+    <div className="mb-12">
       {header}
-      <div className="px-4 grid grid-cols-2 gap-3">
+      <div className="px-5 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
         {cars.slice(0, 4).map((car) => (
           <CarCard key={car.id} car={car} compact />
         ))}

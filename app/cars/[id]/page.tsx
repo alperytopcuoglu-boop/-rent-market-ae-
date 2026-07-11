@@ -80,15 +80,17 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   ]
 
   return (
-    <div className="min-h-screen bg-stone-50 pb-28">
+    <div className="min-h-screen bg-[#faf9f7] pb-28 lg:pb-10">
+
+      <div className="max-w-6xl mx-auto lg:grid lg:grid-cols-2 lg:gap-10 lg:px-6 lg:pt-6">
 
       {/* ─── HERO ─────────────────────────────────── */}
-      <div className="relative h-[340px] bg-stone-200 overflow-hidden">
+      <div className="relative h-[340px] lg:h-[500px] lg:rounded-3xl lg:sticky lg:top-24 lg:self-start bg-stone-200 overflow-hidden">
         <Image
           src={car.image}
           alt={`${car.brand} ${car.model}`}
           fill
-          sizes="(max-width: 480px) 100vw, 480px"
+          sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover"
           priority
           unoptimized
@@ -168,23 +170,42 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
       </div>
 
       {/* ─── CONTENT ─────────────────────────────── */}
-      <div className="px-4 pt-4 space-y-4">
+      <div className="px-4 pt-4 space-y-4 lg:px-0 lg:pt-0">
+
+        {/* Desktop CTA — sticky bar mobilde, inline desktop'ta */}
+        <div className="hidden lg:flex gap-2.5">
+          <a
+            href={`https://wa.me/971556755532?text=${waText}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient gold-glow text-white font-bold py-4 rounded-full text-[13px] uppercase tracking-wide transition-transform hover:scale-[1.02]"
+          >
+            {WA_ICON}
+            Book on WhatsApp
+          </a>
+          <Link
+            href="/contact"
+            className="flex items-center justify-center glass text-stone-700 font-semibold py-4 px-7 rounded-full text-[13px] uppercase tracking-wide hover:shadow-md transition-colors"
+          >
+            Inquiry
+          </Link>
+        </div>
 
         {/* Deposit banner */}
         {car.depositType === 'no-deposit' ? (
-          <div className="flex items-center gap-3 bg-emerald-500 text-white rounded-2xl px-4 py-3 shadow-sm">
+          <div className="flex items-center gap-3 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-2xl px-4 py-3.5 shadow-[0_8px_28px_rgba(16,185,129,0.25)]">
             <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
             <div>
               <p className="font-bold text-sm">No Deposit Required</p>
-              <p className="text-white/75 text-[11px]">Book without any security deposit</p>
+              <p className="text-white/80 text-[11px] font-medium">Book without any security deposit</p>
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-3 bg-white border border-stone-100 rounded-2xl px-4 py-3 shadow-sm">
+          <div className="flex items-center gap-3 glass rounded-2xl px-4 py-3.5">
             <div className="w-8 h-8 rounded-xl bg-stone-100 flex items-center justify-center flex-shrink-0">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#78716c" strokeWidth="2" strokeLinecap="round">
                 <rect x="3" y="11" width="18" height="11" rx="2"/>
@@ -202,9 +223,9 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
         {car.highlights.length > 0 && (
           <div className="grid grid-cols-1 gap-2">
             {car.highlights.map((h) => (
-              <div key={h} className="flex items-center gap-3 bg-white rounded-xl px-3.5 py-2.5 border border-stone-100 shadow-sm">
-                <div className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="3" strokeLinecap="round">
+              <div key={h} className="flex items-center gap-3 glass rounded-xl px-3.5 py-3">
+                <div className="w-6 h-6 rounded-full bg-amber-400/15 flex items-center justify-center flex-shrink-0">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f5b544" strokeWidth="3" strokeLinecap="round">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </div>
@@ -215,7 +236,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
         )}
 
         {/* Pricing */}
-        <div className="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+        <div className="glass rounded-2xl overflow-hidden">
           <div className="px-4 pt-3.5 pb-1">
             <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Rental Rates</p>
           </div>
@@ -225,14 +246,14 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
               { label: 'Weekly',  price: car.weeklyPrice,  unit: '/week',  hi: false },
               { label: 'Monthly', price: car.monthlyPrice, unit: '/month', hi: false },
             ].map((r) => (
-              <div key={r.label} className={`flex flex-col items-center py-5 ${r.hi ? 'bg-amber-50' : ''}`}>
-                <p className={`text-[10px] font-black uppercase tracking-wide mb-1.5 ${r.hi ? 'text-amber-500' : 'text-stone-400'}`}>
+              <div key={r.label} className={`flex flex-col items-center py-5 ${r.hi ? 'bg-amber-400/10' : ''}`}>
+                <p className={`text-[10px] font-black uppercase tracking-wide mb-1.5 ${r.hi ? 'text-gold' : 'text-stone-400'}`}>
                   {r.label}
                 </p>
-                <p className={`font-black text-xl leading-none ${r.hi ? 'text-amber-600' : 'text-stone-800'}`}>
+                <p className={`font-black text-xl leading-none ${r.hi ? 'text-gold' : 'text-stone-900'}`}>
                   {r.price.toLocaleString()}
                 </p>
-                <p className={`text-[10px] mt-1 font-medium ${r.hi ? 'text-amber-400' : 'text-stone-400'}`}>
+                <p className={`text-[10px] mt-1 font-medium ${r.hi ? 'text-amber-600/70' : 'text-stone-400'}`}>
                   AED{r.unit}
                 </p>
               </div>
@@ -241,18 +262,18 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
         </div>
 
         {/* About */}
-        <div className="bg-white rounded-2xl border border-stone-100 shadow-sm p-4">
+        <div className="glass rounded-2xl p-4">
           <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2">About This Car</p>
-          <p className="text-stone-700 text-[13px] leading-relaxed">{car.shortDescription}</p>
+          <p className="text-stone-600 text-[13px] leading-relaxed">{car.shortDescription}</p>
         </div>
 
         {/* Specs */}
-        <div className="bg-white rounded-2xl border border-stone-100 shadow-sm p-4">
+        <div className="glass rounded-2xl p-4">
           <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-4">Specifications</p>
           <div className="grid grid-cols-2 gap-4">
             {specs.map((spec) => (
               <div key={spec.label} className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-stone-50 border border-stone-100 flex items-center justify-center flex-shrink-0 text-stone-500">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center flex-shrink-0 text-amber-600">
                   {spec.icon}
                 </div>
                 <div>
@@ -266,13 +287,13 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
 
         {/* Features */}
         {car.features.length > 0 && (
-          <div className="bg-white rounded-2xl border border-stone-100 shadow-sm p-4">
+          <div className="glass rounded-2xl p-4">
             <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-3">Key Features</p>
             <div className="grid grid-cols-2 gap-y-2.5 gap-x-2">
               {car.features.map((feat) => (
                 <div key={feat} className="flex items-start gap-2">
-                  <div className="w-4 h-4 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="3" strokeLinecap="round">
+                  <div className="w-4 h-4 rounded-full bg-amber-400/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#f5b544" strokeWidth="3" strokeLinecap="round">
                       <polyline points="20 6 9 17 4 12"/>
                     </svg>
                   </div>
@@ -284,7 +305,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
         )}
 
         {/* Provider */}
-        <div className="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+        <div className="glass rounded-2xl overflow-hidden">
           <div className="px-4 pt-3.5 pb-1">
             <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Rental Provider</p>
           </div>
@@ -302,7 +323,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
               href={`https://wa.me/971556755532?text=${waText}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-green-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm"
+              className="flex items-center gap-2 bg-gold-gradient text-white text-xs font-bold px-4 py-2.5 rounded-full uppercase tracking-wide"
             >
               {WA_ICON}
               Chat Now
@@ -310,42 +331,45 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        {/* Related Cars */}
-        {related.length > 0 && (
-          <div className="mb-2">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[15px] font-black text-stone-900">More from {car.providerName}</p>
-              <Link
-                href={`/shop?provider=${car.providerId}`}
-                className="text-amber-600 text-[11px] font-bold"
-              >
-                See All →
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {related.map((c) => (
-                <CarCard key={c.id} car={c} compact />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* ─── STICKY CTA ───────────────────────────── */}
-      <div className="fixed bottom-16 left-0 right-0 max-w-[480px] mx-auto px-4 py-3 bg-white/96 backdrop-blur-md border-t border-stone-100 z-40">
-        <div className="flex gap-2.5">
+      </div>
+
+      {/* Related Cars */}
+      {related.length > 0 && (
+        <div className="max-w-6xl mx-auto px-4 lg:px-6 pt-4 lg:pt-10 mb-2">
+          <div className="flex items-center justify-between mb-3">
+            <p className="font-display text-[17px] md:text-xl font-bold text-stone-900">More from {car.providerName}</p>
+            <Link
+              href={`/shop?provider=${car.providerId}`}
+              className="text-gold text-[11px] font-bold uppercase tracking-wide"
+            >
+              See All →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {related.map((c) => (
+              <CarCard key={c.id} car={c} compact />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── STICKY CTA (mobil/tablet) ─────────────── */}
+      <div className="lg:hidden fixed bottom-16 md:bottom-0 left-0 right-0 px-4 py-3 glass-strong border-t border-stone-200/70 z-40">
+        <div className="flex gap-2.5 max-w-xl mx-auto">
           <a
             href={`https://wa.me/971556755532?text=${waText}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 bg-green-500 text-white font-bold py-3.5 rounded-2xl text-sm shadow-sm active:scale-[0.98] transition-transform"
+            className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-white font-bold py-3.5 rounded-full text-sm active:scale-[0.98] transition-transform"
           >
             {WA_ICON}
             Book on WhatsApp
           </a>
           <Link
             href="/contact"
-            className="flex items-center justify-center bg-stone-900 text-white font-bold py-3.5 px-5 rounded-2xl text-sm active:scale-[0.98] transition-transform"
+            className="flex items-center justify-center glass text-stone-700 font-bold py-3.5 px-5 rounded-full text-sm active:scale-[0.98] transition-transform"
           >
             Inquiry
           </Link>

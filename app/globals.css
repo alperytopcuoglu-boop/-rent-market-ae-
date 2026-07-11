@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --max-app-width: 480px;
+  --bg: #faf9f7;
+  --gold: #b45309;
 }
 
 /* ── Base ─────────────────────────────────────── */
@@ -14,15 +15,18 @@ html {
 }
 
 body {
-  background-color: #f8f7f4;
+  background-color: #faf9f7;
   color: #1c1917;
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none;
   text-rendering: optimizeLegibility;
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-inter), sans-serif;
+  letter-spacing: -0.02em;
 }
 
 /* ── Tap highlight ────────────────────────────── */
@@ -30,7 +34,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ── Scrollbar hide ───────────────────────────── */
+/* ── Scrollbar ────────────────────────────────── */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -38,45 +42,87 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #faf9f7;
+}
+::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 8px;
+}
 
 /* ── Safe area ────────────────────────────────── */
 .pb-safe {
   padding-bottom: max(80px, env(safe-area-inset-bottom));
 }
 
-/* ── Press feedback ───────────────────────────── */
-button:active {
-  transform: scale(0.97);
-  transition: transform 0.1s ease;
+/* ── Glass surfaces ───────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(28, 25, 23, 0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04);
 }
+.glass-strong {
+  background: rgba(250, 249, 247, 0.88);
+  border-bottom: 1px solid rgba(28, 25, 23, 0.06);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+/* on-image frosted chips (hero, card overlays) */
+.glass-dark {
+  background: rgba(10, 10, 10, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ── Gold ─────────────────────────────────────── */
+.text-gold {
+  color: var(--gold);
+}
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #f7c96b 0%, #eda11f 55%, #d97706 100%);
+}
+.gold-glow {
+  box-shadow: 0 6px 32px rgba(237, 161, 31, 0.35);
+}
+
+/* ── Press feedback ───────────────────────────── */
+button:active,
 a:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
   transition: transform 0.1s ease;
 }
 
 /* ── Card hover lift ──────────────────────────── */
 .card-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .card-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 44px rgba(28, 25, 23, 0.12);
+  border-color: rgba(28, 25, 23, 0.12);
 }
 
-/* ── Category ambient shadows ─────────────────── */
-.shadow-sports  { box-shadow: 0 2px 16px rgba(245, 158, 11, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
-.shadow-exotic  { box-shadow: 0 2px 16px rgba(244, 63,  94, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
-.shadow-luxury  { box-shadow: 0 2px 16px rgba(139, 92, 246, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
-.shadow-suv     { box-shadow: 0 2px 16px rgba(59,  130, 246, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
-.shadow-economy { box-shadow: 0 2px 16px rgba(16,  185, 129, 0.12), 0 1px 4px rgba(0,0,0,0.05); }
+/* ── Image zoom on card hover ─────────────────── */
+.img-zoom {
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.card-lift:hover .img-zoom {
+  transform: scale(1.05);
+}
 
 /* ── Animations ───────────────────────────────── */
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .animate-slide-up {
-  animation: slideUp 0.3s ease forwards;
+  animation: slideUp 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 @keyframes fadeIn {
@@ -84,7 +130,7 @@ a:active {
   to   { opacity: 1; }
 }
 .animate-fade-in {
-  animation: fadeIn 0.25s ease forwards;
+  animation: fadeIn 0.3s ease forwards;
 }
 
 @keyframes pulseDot {
@@ -93,6 +139,15 @@ a:active {
 }
 .animate-pulse-dot {
   animation: pulseDot 1.8s ease-in-out infinite;
+}
+
+/* ── Section label (small caps gold) ──────────── */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
 }
 
 /* ── Input base ───────────────────────────────── */

@@ -40,7 +40,7 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto bg-white/97 backdrop-blur-md border-t border-stone-100 z-50 shadow-[0_-1px_12px_rgba(0,0,0,0.05)]"
+      className="md:hidden fixed bottom-0 left-0 right-0 glass-strong border-t border-stone-200/70 z-50"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       <div className="flex items-center h-16">
@@ -54,13 +54,13 @@ export default function BottomNav() {
             >
               {/* Active top indicator */}
               {isActive && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-amber-500 rounded-b-full" />
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gold-gradient rounded-b-full" />
               )}
 
               {tab.icon(isActive)}
 
               <span className={`text-[10px] font-semibold tracking-wide transition-colors ${
-                isActive ? 'text-amber-600' : 'text-stone-400'
+                isActive ? 'text-gold' : 'text-stone-400'
               }`}>
                 {tab.label}
               </span>

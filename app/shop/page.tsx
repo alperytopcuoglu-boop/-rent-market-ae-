@@ -68,21 +68,24 @@ function ShopContent() {
   const activeProviderName = providers.find((p) => p.id === selectedProvider)?.name
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 md:pb-10">
       <Header showSearch onSearchChange={setSearch} />
 
+      <div className="max-w-7xl mx-auto">
+
       {/* Page header */}
-      <div className="px-4 pt-4 pb-3 flex items-center justify-between">
+      <div className="px-5 pt-8 pb-5 flex items-end justify-between">
         <div>
-          <h1 className="text-lg font-black text-stone-900 leading-tight">
+          <p className="section-label">The Fleet</p>
+          <h1 className="font-display text-2xl md:text-3xl font-bold text-stone-900 leading-tight mt-1">
             {activeProviderName ? `${activeProviderName} Fleet` : 'Browse Cars'}
           </h1>
-          <p className="text-xs text-stone-400 mt-0.5 font-medium">{filteredCars.length} cars available</p>
+          <p className="text-xs text-stone-400 mt-1.5 font-medium">{filteredCars.length} cars available</p>
         </div>
         {activeFilterCount > 0 && (
           <button
             onClick={clearFilters}
-            className="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-full"
+            className="text-[11px] font-bold text-gold glass px-4 py-2 rounded-full uppercase tracking-wide"
           >
             Clear {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''}
           </button>
@@ -90,8 +93,8 @@ function ShopContent() {
       </div>
 
       {/* Search bar */}
-      <div className="px-4 mb-3">
-        <div className="flex items-center gap-2.5 bg-white border border-stone-200 rounded-2xl px-4 py-2.5 shadow-sm">
+      <div className="px-5 mb-4">
+        <div className="flex items-center gap-3 glass rounded-2xl px-4 py-3">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8a29e" strokeWidth="2" strokeLinecap="round">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
@@ -103,7 +106,7 @@ function ShopContent() {
             className="flex-1 bg-transparent text-sm text-stone-900 placeholder-stone-400 outline-none"
           />
           {search && (
-            <button onClick={() => setSearch('')} className="text-stone-400">
+            <button onClick={() => setSearch('')} className="text-stone-400 hover:text-stone-900">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
@@ -113,14 +116,14 @@ function ShopContent() {
       </div>
 
       {/* Provider chips */}
-      <div className="overflow-x-auto scrollbar-hide px-4 mb-2.5">
+      <div className="overflow-x-auto scrollbar-hide px-5 mb-3">
         <div className="flex gap-2 w-max">
           <button
             onClick={() => setSelectedProvider('all')}
             className={`flex-shrink-0 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
               selectedProvider === 'all'
                 ? 'bg-stone-900 text-white border-stone-900'
-                : 'bg-white text-stone-600 border-stone-200'
+                : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900'
             }`}
           >
             All
@@ -131,8 +134,8 @@ function ShopContent() {
               onClick={() => setSelectedProvider(selectedProvider === p.id ? 'all' : p.id)}
               className={`flex-shrink-0 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
                 selectedProvider === p.id
-                  ? 'bg-amber-500 text-white border-amber-500'
-                  : 'bg-white text-stone-600 border-stone-200'
+                  ? 'bg-gold-gradient text-white border-transparent'
+                  : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900'
               }`}
             >
               {p.name}
@@ -142,7 +145,7 @@ function ShopContent() {
       </div>
 
       {/* Category chips */}
-      <div className="overflow-x-auto scrollbar-hide px-4 mb-2.5">
+      <div className="overflow-x-auto scrollbar-hide px-5 mb-3">
         <div className="flex gap-2 w-max">
           {CATEGORIES.map((cat) => (
             <button
@@ -150,8 +153,8 @@ function ShopContent() {
               onClick={() => setSelectedCategory(cat)}
               className={`flex-shrink-0 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
                 selectedCategory === cat
-                  ? 'bg-amber-500 text-white border-amber-500'
-                  : 'bg-white text-stone-600 border-stone-200'
+                  ? 'bg-gold-gradient text-white border-transparent'
+                  : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900'
               }`}
             >
               {cat}
@@ -161,13 +164,13 @@ function ShopContent() {
       </div>
 
       {/* Utility row */}
-      <div className="px-4 mb-4 flex items-center gap-2 flex-wrap">
+      <div className="px-5 mb-6 flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setDepositFilter(depositFilter === 'no-deposit' ? 'all' : 'no-deposit')}
           className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${
             depositFilter === 'no-deposit'
               ? 'bg-emerald-500 text-white border-emerald-500'
-              : 'bg-white text-stone-600 border-stone-200'
+              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900'
           }`}
         >
           No Deposit
@@ -177,7 +180,7 @@ function ShopContent() {
           className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${
             availableOnly
               ? 'bg-blue-500 text-white border-blue-500'
-              : 'bg-white text-stone-600 border-stone-200'
+              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900'
           }`}
         >
           Available Now
@@ -200,10 +203,10 @@ function ShopContent() {
       </div>
 
       {/* Results */}
-      <div className="px-4">
+      <div className="px-5 pb-10">
         {filteredCars.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-14 h-14 rounded-2xl bg-stone-100 flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded-2xl glass flex items-center justify-center mx-auto mb-4">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a8a29e" strokeWidth="1.6" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
@@ -212,18 +215,19 @@ function ShopContent() {
             <p className="text-sm mt-1 text-stone-400">Try adjusting your filters</p>
             <button
               onClick={clearFilters}
-              className="mt-5 bg-amber-500 text-white text-sm font-bold px-6 py-2.5 rounded-xl"
+              className="mt-5 bg-gold-gradient text-white text-sm font-bold px-6 py-2.5 rounded-full uppercase tracking-wide"
             >
               Clear Filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
             {filteredCars.map((car) => (
               <CarCard key={car.id} car={car} compact />
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   )
@@ -232,8 +236,8 @@ function ShopContent() {
 export default function ShopPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-stone-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#faf9f7] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
       </div>
     }>
       <ShopContent />

@@ -19,12 +19,14 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen pb-20 bg-stone-50">
+    <div className="min-h-screen pb-20 md:pb-10 bg-[#faf9f7]">
       <Header />
+
+      <div className="md:max-w-2xl md:mx-auto">
 
       {/* Page header */}
       <div className="px-4 pt-5 pb-4">
-        <h1 className="text-xl font-black text-stone-900">Get in Touch</h1>
+        <h1 className="font-display text-2xl font-bold text-stone-900">Get in Touch</h1>
         <p className="text-sm text-stone-500 mt-1 font-medium">
           We&apos;re here to help you find the perfect rental.
         </p>
@@ -36,7 +38,7 @@ export default function ContactPage() {
           href="https://wa.me/971556755532?text=Hi, I'd like to inquire about a car rental."
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-between bg-green-500 text-white rounded-2xl p-4 shadow-sm active:scale-[0.98] transition-transform"
+          className="flex items-center justify-between bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-2xl p-4 shadow-[0_8px_28px_rgba(16,185,129,0.25)] active:scale-[0.98] transition-transform"
         >
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center">
@@ -46,7 +48,7 @@ export default function ContactPage() {
             </div>
             <div>
               <p className="font-black text-base leading-tight">Chat on WhatsApp</p>
-              <p className="text-green-100 text-xs font-medium mt-0.5">Fastest response · Usually within minutes</p>
+              <p className="text-white/80 text-xs font-semibold mt-0.5">Fastest response · Usually within minutes</p>
             </div>
           </div>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
@@ -59,9 +61,9 @@ export default function ContactPage() {
       <div className="px-4 mb-5 grid grid-cols-2 gap-3">
         <a
           href="tel:+971556755532"
-          className="flex items-center gap-3 bg-white rounded-2xl p-3.5 border border-stone-100 shadow-sm active:scale-[0.98] transition-transform"
+          className="flex items-center gap-3 glass rounded-2xl p-3.5 active:scale-[0.98] transition-transform"
         >
-          <div className="w-9 h-9 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
+          <div className="w-9 h-9 bg-amber-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .21h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.06-1.06a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
             </svg>
@@ -74,9 +76,9 @@ export default function ContactPage() {
 
         <a
           href="mailto:hello@rentmarketae.com"
-          className="flex items-center gap-3 bg-white rounded-2xl p-3.5 border border-stone-100 shadow-sm active:scale-[0.98] transition-transform"
+          className="flex items-center gap-3 glass rounded-2xl p-3.5 active:scale-[0.98] transition-transform"
         >
-          <div className="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
+          <div className="w-9 h-9 bg-blue-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
               <polyline points="22,6 12,13 2,6"/>
@@ -90,12 +92,12 @@ export default function ContactPage() {
       </div>
 
       {/* Location & Hours */}
-      <div className="mx-4 mb-5 bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+      <div className="mx-4 mb-5 glass rounded-2xl overflow-hidden">
         <div className="p-4">
           <h3 className="font-bold text-stone-900 text-sm mb-3">Location &amp; Hours</h3>
 
           <div className="flex gap-3 mb-3">
-            <div className="w-8 h-8 bg-stone-50 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 bg-stone-100 rounded-xl flex items-center justify-center flex-shrink-0">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#78716c" strokeWidth="2" strokeLinecap="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
                 <circle cx="12" cy="10" r="3"/>
@@ -108,7 +110,7 @@ export default function ContactPage() {
           </div>
 
           <div className="flex gap-3">
-            <div className="w-8 h-8 bg-stone-50 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 bg-stone-100 rounded-xl flex items-center justify-center flex-shrink-0">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#78716c" strokeWidth="2" strokeLinecap="round">
                 <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
               </svg>
@@ -135,7 +137,7 @@ export default function ContactPage() {
       </div>
 
       {/* Inquiry Form */}
-      <div className="mx-4 mb-5 bg-white rounded-2xl border border-stone-100 shadow-sm p-4">
+      <div className="mx-4 mb-5 glass rounded-2xl p-4">
         <h3 className="font-bold text-stone-900 text-sm mb-1">Send an Inquiry</h3>
         <p className="text-[11px] text-stone-400 mb-4">We&apos;ll get back to you within 2 hours.</p>
 
@@ -146,13 +148,13 @@ export default function ContactPage() {
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
-            <p className="font-bold text-stone-900 text-base">Inquiry Sent!</p>
+            <p className="font-bold text-white text-base">Inquiry Sent!</p>
             <p className="text-xs text-stone-500 mt-2 leading-relaxed max-w-[220px] mx-auto">
               We&apos;ll reach out within 2 hours. Chat on WhatsApp for a faster response.
             </p>
             <button
               onClick={() => setSubmitted(false)}
-              className="mt-5 text-xs text-amber-600 font-bold border border-amber-200 bg-amber-50 px-4 py-2 rounded-xl"
+              className="mt-5 text-xs text-gold font-bold glass px-4 py-2 rounded-full"
             >
               Send Another
             </button>
@@ -166,32 +168,32 @@ export default function ContactPage() {
               { label: 'Car You\'re Interested In', key: 'carInterest', type: 'text', placeholder: 'e.g. Ford Mustang, Nissan Patrol…', required: false },
             ].map((field) => (
               <div key={field.key}>
-                <label className="text-[11px] font-bold text-stone-600 mb-1 block">{field.label}</label>
+                <label className="text-[11px] font-bold text-stone-500 mb-1 block">{field.label}</label>
                 <input
                   required={field.required}
                   type={field.type}
                   value={form[field.key as keyof typeof form]}
                   onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                   placeholder={field.placeholder}
-                  className="w-full bg-stone-50 rounded-xl px-3.5 py-2.5 text-sm text-stone-900 placeholder-stone-400 border border-stone-200 focus:border-amber-400 transition-colors"
+                  className="w-full bg-stone-100 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-stone-400 border border-stone-200 focus:border-amber-400 transition-colors"
                 />
               </div>
             ))}
 
             <div>
-              <label className="text-[11px] font-bold text-stone-600 mb-1 block">Message</label>
+              <label className="text-[11px] font-bold text-stone-500 mb-1 block">Message</label>
               <textarea
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 placeholder="Tell us your rental dates, preferences, or any questions…"
                 rows={3}
-                className="w-full bg-stone-50 rounded-xl px-3.5 py-2.5 text-sm text-stone-900 placeholder-stone-400 border border-stone-200 focus:border-amber-400 transition-colors resize-none"
+                className="w-full bg-stone-100 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-stone-400 border border-stone-200 focus:border-amber-400 transition-colors resize-none"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-amber-500 text-white font-bold py-3 rounded-xl text-sm active:scale-[0.98] transition-transform"
+              className="w-full bg-gold-gradient text-white font-bold py-3.5 rounded-full text-sm uppercase tracking-wide active:scale-[0.98] transition-transform"
             >
               Send Inquiry
             </button>
@@ -200,7 +202,7 @@ export default function ContactPage() {
       </div>
 
       {/* Partner section */}
-      <div className="mx-4 mb-6 bg-gradient-to-br from-stone-900 to-stone-800 rounded-2xl p-4 text-white">
+      <div className="mx-4 mb-6 bg-gradient-to-br from-stone-900 to-stone-800 rounded-2xl p-5 text-white">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -214,7 +216,7 @@ export default function ContactPage() {
             </p>
             <a
               href="mailto:partners@rentmarketae.com"
-              className="inline-flex items-center gap-1.5 bg-amber-500 text-white text-xs font-bold px-4 py-2 rounded-xl"
+              className="inline-flex items-center gap-1.5 bg-gold-gradient text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wide"
             >
               Partner With Us
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -231,6 +233,8 @@ export default function ContactPage() {
           Rent Market AE — Dubai&apos;s trusted car rental marketplace.<br />
           All providers are verified and fully insured.
         </p>
+      </div>
+
       </div>
     </div>
   )
