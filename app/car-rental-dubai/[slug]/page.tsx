@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { allLandingSlugs, getLanding, landingCars } from '@/lib/landings'
+import { allLandingSlugs, computeLandingStats, getLanding, landingCars } from '@/lib/landings'
 import { providers } from '@/lib/data'
 import { providerHref } from '@/lib/providers'
 import Header from '@/components/layout/Header'
@@ -15,11 +15,15 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const landing = getLanding(params.slug)
   if (!landing) return { title: 'Page not found — Rent Market AE' }
 
+  const stats = computeLandingStats(landingCars(landing))
+  const title = landing.title(stats)
+  const description = landing.description(stats)
+
   return {
-    title: landing.title,
-    description: landing.description,
+    title,
+    description,
     alternates: { canonical: `/car-rental-dubai/${landing.slug}` },
-    openGraph: { title: landing.title, description: landing.description, type: 'website' },
+    openGraph: { title, description, type: 'website' },
   }
 }
 
@@ -30,15 +34,16 @@ export default function LandingPage({ params }: { params: { slug: string } }) {
   const fleet = landingCars(landing)
   const isMonthly = landing.slug === 'monthly'
 
-  const fromDaily = fleet.length ? Math.min(...fleet.map((c) => c.dailyPrice)) : 0
-  const fromMonthly = fleet.length ? Math.min(...fleet.map((c) => c.monthlyPrice)) : 0
-  const noDepositCount = fleet.filter((c) => c.depositType === 'no-deposit').length
+  // Sayfadaki her rakam filodan türüyor — elle yazılmıyor, bu yüzden veriyle ayrışamaz.
+  const stats = computeLandingStats(fleet)
+  const faqs = landing.faqs(stats)
+  const { fromDaily, fromMonthly, noDepositCount } = stats
 
   // FAQPage şeması — AI arama motorlarının ve Google'ın soru-cevap kutularının yemi.
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: landing.faqs.map((f) => ({
+    mainEntity: faqs.map((f) => ({
       '@type': 'Question',
       name: f.q,
       acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -87,7 +92,7 @@ export default function LandingPage({ params }: { params: { slug: string } }) {
               {landing.h1}
             </h1>
             <p className="text-stone-500 text-[13px] md:text-sm leading-relaxed mt-4">
-              {landing.intro}
+              {landing.intro(stats)}
             </p>
           </div>
 
@@ -182,7 +187,7 @@ export default function LandingPage({ params }: { params: { slug: string } }) {
           </div>
 
           <div className="mt-5 md:mt-0 space-y-3">
-            {landing.faqs.map((f) => (
+            {faqs.map((f) => (
               <details
                 key={f.q}
                 className="group bg-white rounded-2xl border border-stone-100 shadow-sm px-5 py-4 open:shadow-md transition-shadow"
