@@ -49,12 +49,12 @@ export default function LandingPage({ params }: { params: { slug: string } }) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://rentmarketae.com' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.rentmarketae.com' },
       {
         '@type': 'ListItem',
         position: 2,
         name: landing.h1,
-        item: `https://rentmarketae.com/car-rental-dubai/${landing.slug}`,
+        item: `https://www.rentmarketae.com/car-rental-dubai/${landing.slug}`,
       },
     ],
   }

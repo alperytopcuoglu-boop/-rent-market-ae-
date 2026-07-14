@@ -5,7 +5,7 @@ import { providerSlug } from '@/lib/providers'
 import { allLandingSlugs } from '@/lib/landings'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://rentmarketae.com'
+  const baseUrl = 'https://www.rentmarketae.com'
   const lastModified = new Date()
 
   const carPages = cars.map((car) => ({

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   keywords: 'car rental dubai, rent car dubai, sports car rental, SUV rental dubai, luxury car rental UAE, no deposit car rental, monthly car rental dubai, exotic car rental, cheapest car rental dubai',
   applicationName: 'Rent Market AE',
   authors: [{ name: 'Rent Market AE' }],
-  metadataBase: new URL('https://rentmarketae.com'),
+  metadataBase: new URL('https://www.rentmarketae.com'),
   alternates: {
     canonical: '/',
   },
@@ -102,7 +102,7 @@ export default function RootLayout({
               '@type': 'LocalBusiness',
               name: 'Rent Market AE',
               description: "Dubai's curated car rental marketplace — one request, best offers from 5 verified providers.",
-              url: 'https://rentmarketae.com',
+              url: 'https://www.rentmarketae.com',
               telephone: '+971556755532',
               email: 'hello@rentmarketae.com',
               address: {
