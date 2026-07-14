@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://rentmarketae.com/sitemap.xml
