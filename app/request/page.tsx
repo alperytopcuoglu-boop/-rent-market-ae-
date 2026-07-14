@@ -21,12 +21,12 @@ const STEPS = ['When', 'How long', 'What vibe', 'Budget', 'You'] as const
 
 const DURATION_OPTIONS = ['1-2 days', '3-6 days', '1-2 weeks', '1 month+']
 const CATEGORY_OPTIONS = [
-  { label: '🏎️ Sports', value: 'Sports' },
-  { label: '🚙 SUV', value: 'SUV' },
-  { label: '💼 Luxury', value: 'Luxury' },
-  { label: '✨ Exotic', value: 'Exotic' },
-  { label: '🚗 Economy', value: 'Economy' },
-  { label: '🤷 Surprise me', value: 'Open to suggestions' },
+  { label: 'Sports', value: 'Sports' },
+  { label: 'SUV', value: 'SUV' },
+  { label: 'Luxury', value: 'Luxury' },
+  { label: 'Exotic', value: 'Exotic' },
+  { label: 'Economy', value: 'Economy' },
+  { label: 'Surprise me', value: 'Open to suggestions' },
 ]
 const BUDGET_OPTIONS = ['Under AED 200/day', 'AED 200–400/day', 'AED 400–800/day', 'AED 800+/day']
 const DEPOSIT_OPTIONS = ['No-deposit only', 'Deposit is fine']
