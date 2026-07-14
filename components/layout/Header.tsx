@@ -28,7 +28,7 @@ export default function Header({ showSearch = false, onSearchChange }: HeaderPro
 
   return (
     <header className="sticky top-0 z-40 glass-strong">
-      <div className="flex items-center justify-between px-5 h-16 md:h-[72px] max-w-7xl mx-auto">
+      <div className="flex items-center justify-between px-5 h-16 md:h-[72px] max-w-[1200px] mx-auto">
 
         {/* Logo */}
         <Link href="/" className="flex items-center">
@@ -105,7 +105,7 @@ export default function Header({ showSearch = false, onSearchChange }: HeaderPro
 
       {/* Expandable search bar */}
       {searchOpen && (
-        <div className="px-5 pb-4 animate-fade-in max-w-7xl mx-auto">
+        <div className="px-5 pb-4 animate-fade-in max-w-[1200px] mx-auto">
           <div className="flex items-center gap-3 glass rounded-2xl px-4 py-3">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8a29e" strokeWidth="2" strokeLinecap="round">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>

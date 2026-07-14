@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import BottomNav from '@/components/layout/BottomNav'
+import ConciergeStage from '@/components/concierge/ConciergeStage'
+import Footer from '@/components/layout/Footer'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -10,11 +12,11 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-const spaceGrotesk = Space_Grotesk({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-display',
-  weight: ['500', '600', '700'],
+  weight: ['600', '700', '800'],
 })
 
 export const metadata: Metadata = {
@@ -92,8 +94,30 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-WDXGWFBV');
           `}
         </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'LocalBusiness',
+              name: 'Rent Market AE',
+              description: "Dubai's curated car rental marketplace — one request, best offers from 5 verified providers.",
+              url: 'https://rentmarketae.com',
+              telephone: '+971556755532',
+              email: 'hello@rentmarketae.com',
+              address: {
+                '@type': 'PostalAddress',
+                streetAddress: 'Marasi Drive, Business Bay',
+                addressLocality: 'Dubai',
+                addressCountry: 'AE',
+              },
+              areaServed: 'Dubai',
+              priceRange: 'AED 150 - AED 3500 per day',
+            }),
+          }}
+        />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} ${inter.className} bg-[#faf9f7] min-h-screen`}>
+      <body className={`${inter.variable} ${jakarta.variable} ${inter.className} bg-[#f8f7f4] min-h-screen`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
@@ -104,9 +128,11 @@ export default function RootLayout({
           />
         </noscript>
 
-        <main className="relative bg-[#faf9f7] min-h-screen">
+        <main className="relative bg-[#f8f7f4] min-h-screen">
           {children}
+          <Footer />
           <BottomNav />
+          <ConciergeStage />
         </main>
       </body>
     </html>

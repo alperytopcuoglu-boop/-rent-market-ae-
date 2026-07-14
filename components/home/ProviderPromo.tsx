@@ -9,13 +9,15 @@ const colorMap: Record<string, { accent: string; pill: string; glow: string }> =
   violet:  { accent: 'from-violet-400 to-violet-600',   pill: 'text-violet-600',  glow: 'shadow-[0_8px_28px_rgba(139,92,246,0.25)]' },
   blue:    { accent: 'from-blue-400 to-blue-600',       pill: 'text-blue-600',    glow: 'shadow-[0_8px_28px_rgba(59,130,246,0.25)]' },
   rose:    { accent: 'from-rose-400 to-rose-600',       pill: 'text-rose-600',    glow: 'shadow-[0_8px_28px_rgba(244,63,94,0.25)]' },
+  teal:    { accent: 'from-teal-400 to-teal-600',       pill: 'text-teal-600',    glow: 'shadow-[0_8px_28px_rgba(20,184,166,0.25)]' },
+  indigo:  { accent: 'from-indigo-400 to-indigo-600',   pill: 'text-indigo-600',  glow: 'shadow-[0_8px_28px_rgba(99,102,241,0.25)]' },
 }
 
 export default function ProviderPromo({ provider }: { provider: Provider }) {
   const colors = colorMap[provider.color] || colorMap.amber
 
   return (
-    <div className="max-w-7xl mx-auto px-5">
+    <div className="max-w-[1200px] mx-auto px-5">
       <div className="my-6 rounded-3xl glass p-6 md:p-8 relative overflow-hidden">
         {/* Accent glow line */}
         <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${colors.accent}`} />

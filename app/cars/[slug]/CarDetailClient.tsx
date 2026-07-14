@@ -3,8 +3,10 @@
 import { notFound, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getCarById, cars } from '@/lib/data'
+import { cars } from '@/lib/data'
+import { getCarBySlug } from '@/lib/slugs'
 import CarCard from '@/components/home/CarCard'
+import TruePriceCard from '@/components/TruePriceCard'
 
 const categoryStyle: Record<string, { bg: string; text: string }> = {
   Economy: { bg: 'bg-emerald-500', text: 'text-white' },
@@ -20,10 +22,9 @@ const WA_ICON = (
   </svg>
 )
 
-export default function CarDetailPage({ params }: { params: { id: string } }) {
-  const { id } = params
+export default function CarDetailClient({ slug }: { slug: string }) {
   const router = useRouter()
-  const car = getCarById(id)
+  const car = getCarBySlug(slug)
 
   if (!car) notFound()
 
@@ -80,7 +81,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   ]
 
   return (
-    <div className="min-h-screen bg-[#faf9f7] pb-28 lg:pb-10">
+    <div className="min-h-screen bg-[#f8f7f4] pb-28 lg:pb-10">
 
       <div className="max-w-6xl mx-auto lg:grid lg:grid-cols-2 lg:gap-10 lg:px-6 lg:pt-6">
 
@@ -159,11 +160,11 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
           {/* Price */}
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-white font-black text-[30px] leading-none">
-              AED {car.dailyPrice.toLocaleString()}
+              AED {car.dailyPrice.toLocaleString('en-US')}
             </span>
             <span className="text-white/55 text-sm font-medium">/day</span>
             <span className="text-white/40 text-xs ml-1">
-              · {car.monthlyPrice.toLocaleString()}/mo
+              · {car.monthlyPrice.toLocaleString('en-US')}/mo
             </span>
           </div>
         </div>
@@ -214,7 +215,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
             </div>
             <div>
               <p className="font-bold text-sm text-stone-800">Security Deposit</p>
-              <p className="text-stone-500 text-[11px]">AED {car.depositAmount?.toLocaleString()} — refunded on return</p>
+              <p className="text-stone-500 text-[11px]">AED {car.depositAmount?.toLocaleString('en-US')} — refunded on return</p>
             </div>
           </div>
         )}
@@ -251,7 +252,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
                   {r.label}
                 </p>
                 <p className={`font-black text-xl leading-none ${r.hi ? 'text-gold' : 'text-stone-900'}`}>
-                  {r.price.toLocaleString()}
+                  {r.price.toLocaleString('en-US')}
                 </p>
                 <p className={`text-[10px] mt-1 font-medium ${r.hi ? 'text-amber-600/70' : 'text-stone-400'}`}>
                   AED{r.unit}
@@ -260,6 +261,9 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
             ))}
           </div>
         </div>
+
+        {/* True Total Price */}
+        <TruePriceCard car={car} />
 
         {/* About */}
         <div className="glass rounded-2xl p-4">

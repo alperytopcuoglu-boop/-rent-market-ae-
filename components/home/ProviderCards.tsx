@@ -1,144 +1,76 @@
 'use client'
 
-import { providers } from '@/lib/data'
-import { Provider } from '@/lib/types'
+import Link from 'next/link'
+import { providers, cars } from '@/lib/data'
 
 interface ProviderCardsProps {
   selectedId: string | null
   onSelect: (id: string | null) => void
 }
 
-// Monogram badges — polished lettermark per provider
-const monogramMap: Record<string, string> = {
-  '4hire':      '4H',
-  'habibcar':   'HC',
-  'exoticcar':  'EX',
-  'royaldrive': 'RD',
-  'elitedrive': 'ED',
+const accentBar: Record<string, string> = {
+  amber: 'bg-amber-500',
+  emerald: 'bg-emerald-500',
+  violet: 'bg-violet-500',
+  blue: 'bg-blue-500',
+  rose: 'bg-rose-500',
+  teal: 'bg-teal-500',
+  indigo: 'bg-indigo-500',
 }
 
-const colorMap: Record<string, { text: string; activeBg: string; glow: string }> = {
-  amber:   { text: 'text-amber-600',   activeBg: 'bg-gradient-to-br from-amber-400 to-amber-600',     glow: 'shadow-[0_8px_28px_rgba(245,158,11,0.35)]' },
-  emerald: { text: 'text-emerald-600', activeBg: 'bg-gradient-to-br from-emerald-400 to-emerald-600', glow: 'shadow-[0_8px_28px_rgba(16,185,129,0.35)]' },
-  violet:  { text: 'text-violet-600',  activeBg: 'bg-gradient-to-br from-violet-400 to-violet-600',   glow: 'shadow-[0_8px_28px_rgba(139,92,246,0.35)]' },
-  blue:    { text: 'text-blue-600',    activeBg: 'bg-gradient-to-br from-blue-400 to-blue-600',       glow: 'shadow-[0_8px_28px_rgba(59,130,246,0.35)]' },
-  rose:    { text: 'text-rose-600',    activeBg: 'bg-gradient-to-br from-rose-400 to-rose-600',       glow: 'shadow-[0_8px_28px_rgba(244,63,94,0.35)]' },
-}
-
-function ProviderCard({
-  provider,
-  isSelected,
-  onSelect,
-}: {
-  provider: Provider
-  isSelected: boolean
-  onSelect: () => void
-}) {
-  const colors = colorMap[provider.color] || colorMap.amber
-
-  return (
-    <button
-      onClick={onSelect}
-      className={`flex-shrink-0 flex flex-col items-center gap-2 transition-all duration-200 ${
-        isSelected ? 'scale-[1.04]' : 'scale-100'
-      }`}
-    >
-      {/* Logo block */}
-      <div
-        className={`w-[60px] h-[60px] rounded-2xl flex items-center justify-center transition-all duration-200 ${
-          isSelected
-            ? `${colors.activeBg} ${colors.glow}`
-            : 'glass hover:shadow-md'
-        }`}
-      >
-        <span
-          className={`text-[17px] font-black tracking-tight leading-none ${
-            isSelected ? 'text-white' : colors.text
-          }`}
-        >
-          {monogramMap[provider.id] || '••'}
-        </span>
-      </div>
-
-      {/* Name */}
-      <span
-        className={`text-[10px] font-bold tracking-wide text-center leading-tight max-w-[64px] uppercase ${
-          isSelected ? 'text-stone-900' : 'text-stone-500'
-        }`}
-      >
-        {provider.name}
-      </span>
-
-      {/* Tagline */}
-      <span className="text-[9px] text-stone-400 text-center leading-tight max-w-[64px]">
-        {provider.tagline}
-      </span>
-    </button>
-  )
-}
-
+// Provider kartları — logo alanı + isim + 1 satır değer önerisi (harf kutusu YOK).
 export default function ProviderCards({ selectedId, onSelect }: ProviderCardsProps) {
   return (
-    <div className="border-b border-stone-200/60">
-      {/* Section title */}
-      <div className="px-5 pt-8 pb-4 flex items-center justify-between max-w-7xl mx-auto">
+    <div className="max-w-[1200px] mx-auto pt-8">
+      <div className="px-5 md:px-8 pb-4 flex items-center justify-between">
         <div>
           <p className="section-label">Our Partners</p>
-          <h2 className="font-display text-lg md:text-xl font-bold text-stone-900 mt-1">Rental Providers</h2>
+          <h2 className="font-display font-bold text-stone-900 text-lg md:text-xl mt-0.5">Rental Providers</h2>
         </div>
-        {selectedId && (
-          <button
-            onClick={() => onSelect(null)}
-            className="text-[11px] text-gold font-bold tracking-wide uppercase"
+        <div className="flex items-center gap-4">
+          {selectedId && (
+            <button
+              onClick={() => onSelect(null)}
+              className="text-[11px] text-stone-400 font-bold tracking-wide uppercase hover:text-stone-600"
+            >
+              Clear
+            </button>
+          )}
+          <Link
+            href="/providers"
+            className="text-[11px] text-amber-700 font-bold tracking-wide uppercase hover:text-amber-800 whitespace-nowrap"
           >
-            View All
-          </button>
-        )}
+            Compare all →
+          </Link>
+        </div>
       </div>
 
-      {/* Scrollable cards */}
-      <div className="overflow-x-auto scrollbar-hide px-5 pb-7 max-w-7xl mx-auto">
-        <div className="flex gap-5 md:gap-9 w-max">
-          {/* All Cars button */}
-          <button
-            onClick={() => onSelect(null)}
-            className="flex-shrink-0 flex flex-col items-center gap-2"
-          >
-            <div
-              className={`w-[60px] h-[60px] rounded-2xl flex items-center justify-center transition-all duration-200 ${
-                selectedId === null
-                  ? 'bg-gold-gradient gold-glow'
-                  : 'glass hover:shadow-md'
-              }`}
-            >
-              <span
-                className={`text-[12px] font-black tracking-[0.14em] leading-none ${
-                  selectedId === null ? 'text-white' : 'text-stone-600'
+      <div className="overflow-x-auto scrollbar-hide px-5 md:px-8 pb-2">
+        <div className="flex gap-3 w-max lg:w-full lg:grid lg:grid-cols-5">
+          {providers.map((p) => {
+            const isSelected = selectedId === p.id
+            const carCount = cars.filter((c) => c.providerId === p.id).length
+            return (
+              <button
+                key={p.id}
+                onClick={() => onSelect(isSelected ? null : p.id)}
+                className={`relative flex-shrink-0 w-[190px] lg:w-auto text-left bg-white rounded-2xl border shadow-sm px-4 pt-4 pb-3.5 transition-all overflow-hidden ${
+                  isSelected
+                    ? 'border-stone-900 shadow-md'
+                    : 'border-stone-100 hover:shadow-md hover:-translate-y-0.5'
                 }`}
               >
-                ALL
-              </span>
-            </div>
-            <span
-              className={`text-[10px] font-bold tracking-wide uppercase ${
-                selectedId === null ? 'text-stone-900' : 'text-stone-500'
-              }`}
-            >
-              All Cars
-            </span>
-            <span className="text-[9px] text-stone-400">Browse All</span>
-          </button>
-
-          {providers.map((provider) => (
-            <ProviderCard
-              key={provider.id}
-              provider={provider}
-              isSelected={selectedId === provider.id}
-              onSelect={() =>
-                onSelect(selectedId === provider.id ? null : provider.id)
-              }
-            />
-          ))}
+                <span className={`absolute top-0 left-0 right-0 h-[3px] ${accentBar[p.color] ?? 'bg-amber-500'}`} />
+                <p className="font-display font-extrabold text-stone-900 text-[13px] tracking-tight leading-tight">
+                  {p.name}
+                </p>
+                <p className="text-stone-400 text-[10.5px] mt-1 leading-snug">{p.tagline}</p>
+                <p className="text-[10px] font-bold text-stone-500 mt-2.5">
+                  {carCount} cars {isSelected ? '· selected ✓' : '→'}
+                </p>
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>

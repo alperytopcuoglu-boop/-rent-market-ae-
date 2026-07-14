@@ -74,7 +74,7 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen pb-20 md:pb-10 bg-[#faf9f7]">
+    <div className="min-h-screen pb-20 md:pb-10 bg-[#f8f7f4]">
       <Header />
 
       <div className="md:max-w-2xl md:mx-auto">

@@ -12,16 +12,27 @@ const CATEGORIES: CategoryFilter[] = ['All', 'Economy', 'SUV', 'Luxury', 'Sports
 function ShopContent() {
   const searchParams = useSearchParams()
   const initialProvider = searchParams.get('provider') || 'all'
+  const initialCategory = (searchParams.get('category') as CategoryFilter) || 'All'
+  const initialDeposit = (searchParams.get('deposit') as DepositFilter) || 'all'
 
-  const [search, setSearch]                    = useState('')
+  const [search, setSearch]                    = useState(searchParams.get('q') || '')
   const [selectedProvider, setSelectedProvider] = useState<string>(initialProvider)
-  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('All')
-  const [depositFilter, setDepositFilter]       = useState<DepositFilter>('all')
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>(
+    CATEGORIES.includes(initialCategory) ? initialCategory : 'All'
+  )
+  const [depositFilter, setDepositFilter]       = useState<DepositFilter>(
+    initialDeposit === 'no-deposit' ? 'no-deposit' : 'all'
+  )
   const [availableOnly, setAvailableOnly]       = useState(false)
   const [sort, setSort]                         = useState<SortOption>('default')
 
   useEffect(() => {
     setSelectedProvider(searchParams.get('provider') || 'all')
+    const q = searchParams.get('q')
+    if (q) setSearch(q)
+    const cat = searchParams.get('category') as CategoryFilter | null
+    if (cat && CATEGORIES.includes(cat)) setSelectedCategory(cat)
+    if (searchParams.get('deposit') === 'no-deposit') setDepositFilter('no-deposit')
   }, [searchParams])
 
   const filteredCars = useMemo(() => {
@@ -71,7 +82,7 @@ function ShopContent() {
     <div className="min-h-screen pb-20 md:pb-10">
       <Header showSearch onSearchChange={setSearch} />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1200px] mx-auto">
 
       {/* Page header */}
       <div className="px-5 pt-8 pb-5 flex items-end justify-between">
@@ -236,7 +247,7 @@ function ShopContent() {
 export default function ShopPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#faf9f7] flex items-center justify-center">
+      <div className="min-h-screen bg-[#f8f7f4] flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
       </div>
     }>
