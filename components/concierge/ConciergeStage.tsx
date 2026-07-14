@@ -52,13 +52,28 @@ function CarCardBlock({ payload }: { payload: Record<string, unknown> }) {
 
 function QuoteCardBlock({ payload }: { payload: Record<string, unknown> }) {
   const car = cars.find((c) => c.id === payload.carId)
+
+  // null = ücret doğrulanmamış. Bu alanlar GÖSTERİLMEZ — özellikle deliveryFee:
+  // null'ı "Free" diye basmak, teyit etmediğimiz bir ücreti bedava vaat etmek olur.
+  const deliveryFee = payload.deliveryFee as number | null | undefined
+  const kmIncluded = payload.kmIncluded as number | null | undefined
+  const excess = (payload.excess ?? payload.insuranceExcessAED) as number | null | undefined
+
   const rows: [string, string][] = [
-    [`Rental (${payload.days} days, ${payload.rateLabel} rate)`, `AED ${Number(payload.baseTotal || 0).toLocaleString('en-US')}`],
-    ['Delivery', Number(payload.deliveryFee) > 0 ? `AED ${payload.deliveryFee}` : 'Free'],
+    [
+      `Rental (${payload.days} days, ${payload.rateLabel} rate)`,
+      `AED ${Number(payload.baseTotal || 0).toLocaleString('en-US')}`,
+    ],
   ]
+  if (deliveryFee !== null && deliveryFee !== undefined) {
+    rows.push(['Delivery', deliveryFee > 0 ? `AED ${deliveryFee}` : 'Free'])
+  }
+
+  const feesVerified = deliveryFee !== null && deliveryFee !== undefined
+
   return (
     <div className="glass rounded-2xl p-4 animate-slide-up">
-      <p className="section-label mb-1">True Total Price</p>
+      <p className="section-label mb-1">{feesVerified ? 'True Total Price' : 'Rental Price'}</p>
       {car && <p className="font-display font-bold text-stone-900 text-sm mb-3">{car.brand} {car.model}</p>}
       <div className="space-y-1.5 mb-3">
         {rows.map(([label, value]) => (
@@ -69,13 +84,20 @@ function QuoteCardBlock({ payload }: { payload: Record<string, unknown> }) {
         ))}
       </div>
       <div className="flex justify-between items-baseline border-t border-stone-200/70 pt-2.5 mb-3">
-        <span className="text-[12px] font-bold text-stone-700">Total — no surprises</span>
+        <span className="text-[12px] font-bold text-stone-700">
+          {feesVerified ? 'Total — no surprises' : 'Rental total'}
+        </span>
         <span className="font-display font-bold text-amber-700 text-xl">AED {Number(payload.total || 0).toLocaleString('en-US')}</span>
       </div>
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-stone-400">
         <span>{Number(payload.depositBlock) > 0 ? `Deposit block: AED ${Number(payload.depositBlock).toLocaleString('en-US')} (refunded)` : 'No deposit'}</span>
-        <span>{Number(payload.kmIncluded).toLocaleString('en-US')} km included</span>
-        <span>Insurance incl. (excess AED {Number(payload.excess ?? payload.insuranceExcessAED ?? 0).toLocaleString('en-US')})</span>
+        {kmIncluded !== null && kmIncluded !== undefined && (
+          <span>{kmIncluded.toLocaleString('en-US')} km included</span>
+        )}
+        {excess !== null && excess !== undefined && (
+          <span>Insurance incl. (excess AED {excess.toLocaleString('en-US')})</span>
+        )}
+        {!feesVerified && <span>Delivery &amp; mileage confirmed by the provider</span>}
       </div>
     </div>
   )

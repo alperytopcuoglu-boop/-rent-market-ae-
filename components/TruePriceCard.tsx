@@ -14,8 +14,14 @@ export default function TruePriceCard({ car }: { car: Car }) {
     <div className="glass rounded-2xl p-4">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest">True Total Price</p>
-          <p className="text-[10px] text-emerald-600 font-bold mt-0.5">✓ No surprises — this is what you pay</p>
+          <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest">
+            {q.feesVerified ? 'True Total Price' : 'Rental Price'}
+          </p>
+          <p className="text-[10px] text-emerald-600 font-bold mt-0.5">
+            {q.feesVerified
+              ? '✓ No surprises — this is what you pay'
+              : 'Delivery, mileage and insurance excess confirmed with the provider before you book'}
+          </p>
         </div>
         <div className="flex gap-1">
           {DAY_OPTIONS.map((d) => (
@@ -41,19 +47,29 @@ export default function TruePriceCard({ car }: { car: Car }) {
           </span>
           <span className="font-semibold text-stone-800">AED {q.baseTotal.toLocaleString('en-US')}</span>
         </div>
-        <div className="flex justify-between text-[12px]">
-          <span className="text-stone-500">Door delivery</span>
-          <span className="font-semibold text-stone-800">{q.deliveryFee > 0 ? `AED ${q.deliveryFee}` : 'Free'}</span>
-        </div>
-        <div className="flex justify-between text-[12px]">
-          <span className="text-stone-500">Comprehensive insurance</span>
-          <span className="font-semibold text-emerald-600">Included</span>
-        </div>
+        {q.deliveryFee !== null && (
+          <div className="flex justify-between text-[12px]">
+            <span className="text-stone-500">Door delivery</span>
+            <span className="font-semibold text-stone-800">
+              {q.deliveryFee > 0 ? `AED ${q.deliveryFee}` : 'Free'}
+            </span>
+          </div>
+        )}
+        {q.insuranceIncluded && (
+          <div className="flex justify-between text-[12px]">
+            <span className="text-stone-500">Comprehensive insurance</span>
+            <span className="font-semibold text-emerald-600">Included</span>
+          </div>
+        )}
       </div>
 
       <div className="flex justify-between items-baseline border-t border-stone-200/70 pt-3 mb-3">
-        <span className="text-[13px] font-bold text-stone-800">Total</span>
-        <span className="font-display font-bold text-amber-700 text-2xl">AED {q.total.toLocaleString('en-US')}</span>
+        <span className="text-[13px] font-bold text-stone-800">
+          {q.feesVerified ? 'Total' : 'Rental total'}
+        </span>
+        <span className="font-display font-bold text-amber-700 text-2xl">
+          AED {q.total.toLocaleString('en-US')}
+        </span>
       </div>
 
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-stone-400">
@@ -62,9 +78,15 @@ export default function TruePriceCard({ car }: { car: Car }) {
             ? `Deposit block: AED ${q.depositBlockAED.toLocaleString('en-US')} (refunded on return)`
             : 'No deposit required'}
         </span>
-        <span>{q.kmIncludedTotal.toLocaleString('en-US')} km included · extra AED {q.extraKmFeeAED}/km</span>
-        <span>Insurance excess: AED {q.insuranceExcessAED.toLocaleString('en-US')}</span>
         <span>Salik AED {q.salikNoteAED}/crossing billed after</span>
+        {q.kmIncludedTotal !== null && (
+          <span>
+            {q.kmIncludedTotal.toLocaleString('en-US')} km included · extra AED {q.extraKmFeeAED}/km
+          </span>
+        )}
+        {q.insuranceExcessAED !== null && (
+          <span>Insurance excess: AED {q.insuranceExcessAED.toLocaleString('en-US')}</span>
+        )}
       </div>
     </div>
   )

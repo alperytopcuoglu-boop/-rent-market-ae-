@@ -150,20 +150,21 @@ export default function ProviderPage({ params }: { params: { slug: string } }) {
           </div>
         </header>
 
-        {/* Ücret şeffaflığı — "Sürpriz Yok" sözünün provider seviyesindeki karşılığı */}
+        {/* Bildiğimiz kesin şartlar. Ücret matrisi (muafiyet/km/teslim) sağlayıcılardan
+            teyit alınana kadar YAYINLANMIYOR — pricing.ts'teki FEES_VERIFIED bayrağı. */}
         <section className="mt-10 md:grid md:grid-cols-[1fr_1.15fr] md:gap-10 md:items-start">
           <div className="md:sticky md:top-6">
-            <p className="section-label">No Surprises</p>
+            <p className="section-label">What we can tell you</p>
             <h2 className="font-display font-bold text-stone-900 text-lg md:text-xl mt-0.5">
-              What {provider.name} actually charges
+              Renting from {provider.name}
             </h2>
             <p className="text-stone-500 text-[13px] leading-relaxed mt-3">
-              Every cost that shows up after the listed daily rate — insurance excess, mileage
-              limits, delivery — is published here before you book. This is what separates a real
-              quote from a listing price.
+              {fees
+                ? 'Every cost that shows up after the listed daily rate — insurance excess, mileage limits, delivery — is published here before you book. This is what separates a real quote from a listing price.'
+                : `The rental rates and deposits below are exact. ${provider.name} confirms its insurance excess, mileage allowance and delivery terms with you before you book — we would rather send you an unanswered question than a number we have not verified.`}
             </p>
             <Link
-              href="/shop"
+              href="/providers"
               className="inline-block text-[12px] font-bold text-amber-700 mt-4 hover:text-amber-800"
             >
               Compare with other providers →
@@ -172,23 +173,9 @@ export default function ProviderPage({ params }: { params: { slug: string } }) {
 
           <div className="bg-white rounded-2xl border border-stone-100 shadow-sm px-5 md:px-6 py-2 mt-5 md:mt-0">
             <FeeRow
-              label="Insurance"
-              value={fees.insuranceIncluded ? 'Included' : 'Not included'}
-              note={`You are liable up to AED ${fees.insuranceExcessAED.toLocaleString('en-US')} in case of damage (excess).`}
-            />
-            <FeeRow
-              label="Mileage included"
-              value={`${fees.kmLimitDaily} km / day`}
-              note={`Beyond the limit: AED ${fees.extraKmFeeAED} per extra km.`}
-            />
-            <FeeRow
-              label="Door delivery"
-              value={fees.deliveryFeeAED === 0 ? 'Free' : `AED ${fees.deliveryFeeAED}`}
-              note={
-                fees.deliveryFeeAED === 0
-                  ? 'Delivered anywhere in Dubai at no cost.'
-                  : `Free on rentals of ${fees.minDaysForFreeDelivery}+ days.`
-              }
+              label="Rental rates"
+              value={`From AED ${stats.fromPrice.toLocaleString('en-US')} / day`}
+              note={`${stats.carCount} cars. Daily, weekly and monthly rates are shown on each car — the weekly rate beats 7 daily rates, and the monthly rate is cheaper again.`}
             />
             <FeeRow
               label="Deposit"
@@ -201,14 +188,37 @@ export default function ProviderPage({ params }: { params: { slug: string } }) {
               }
               note={
                 stats.noDepositCount === stats.carCount
-                  ? 'Nothing is blocked or held on your card.'
+                  ? 'Nothing is blocked or held on your card, and there is no deposit-waiver fee.'
                   : 'Where required, it is blocked on your card and released after return — never charged. The amount is shown on each car.'
               }
             />
+            {fees && (
+              <>
+                <FeeRow
+                  label="Insurance"
+                  value={fees.insuranceIncluded ? 'Included' : 'Not included'}
+                  note={`You are liable up to AED ${fees.insuranceExcessAED.toLocaleString('en-US')} in case of damage (excess).`}
+                />
+                <FeeRow
+                  label="Mileage included"
+                  value={`${fees.kmLimitDaily} km / day`}
+                  note={`Beyond the limit: AED ${fees.extraKmFeeAED} per extra km.`}
+                />
+                <FeeRow
+                  label="Door delivery"
+                  value={fees.deliveryFeeAED === 0 ? 'Free' : `AED ${fees.deliveryFeeAED}`}
+                  note={
+                    fees.deliveryFeeAED === 0
+                      ? 'Delivered anywhere in Dubai at no cost.'
+                      : `Free on rentals of ${fees.minDaysForFreeDelivery}+ days.`
+                  }
+                />
+              </>
+            )}
             <FeeRow
               label="Salik (road tolls)"
               value="AED 4 / crossing"
-              note="Billed after the rental, based on actual crossings."
+              note="Dubai's public toll rate, billed after the rental based on actual crossings."
             />
           </div>
         </section>

@@ -1,8 +1,20 @@
 import { Car } from './types'
 
-// ── True Total Price — sağlayıcı ücret matrisi ─────────────────────
-// NOT: Bu değerler Dubai pazarı standart varsayımlarıdır.
-// Sağlayıcılarla teyit edilecek (VERIFY_WITH_PROVIDERS).
+// ── Sağlayıcı ücret matrisi ────────────────────────────────────────────────
+//
+// DURUM: DOĞRULANMAMIŞ. Aşağıdaki rakamlar Dubai pazarı varsayımlarıdır ve
+// gerçek, isimli üçüncü taraf şirketlere atfedilmektedir. Teyit alınmadan
+// müşteriye gösterilmezler — bunu FEES_VERIFIED bayrağı zorlar.
+//
+// Teyit alındığında yapılacak: rakamları güncelle, aşağıyı `true` yap.
+// O anda ücret matrisi provider sayfalarında, True Price kartında ve
+// concierge'de otomatik olarak geri gelir — başka hiçbir yeri değiştirmeye
+// gerek yok.
+//
+// Sağlayıcılardan sorulacaklar: sigorta muafiyeti, günlük km limiti, aşım
+// ücreti, kapıya teslim ücreti + kaç günden sonra bedava, Salik'te admin
+// ücreti alıyorlar mı, depozito iade süresi.
+export const FEES_VERIFIED = false
 
 export interface ProviderFees {
   insuranceIncluded: boolean
@@ -21,24 +33,36 @@ export const PROVIDER_FEES: Record<string, ProviderFees> = {
   elitedrive:   { insuranceIncluded: true, insuranceExcessAED: 2500, kmLimitDaily: 250, extraKmFeeAED: 1,   deliveryFeeAED: 0,   minDaysForFreeDelivery: 1 },
 }
 
-export const SALIK_PER_CROSSING_AED = 4 // kiralama sonrası faturalanır
+/** Doğrulanmış ücretler — teyit yoksa undefined döner ve hiçbir yerde gösterilmez. */
+export function verifiedFees(providerId: string): ProviderFees | undefined {
+  if (!FEES_VERIFIED) return undefined
+  return PROVIDER_FEES[providerId]
+}
+
+// Salik, RTA'nın kamuya açık tarifesi — sağlayıcıdan teyit gerektirmez.
+// (Sağlayıcıların üstüne admin ücreti ekleyip eklemediği AYRI bir soru ve teyit bekliyor.)
+export const SALIK_PER_CROSSING_AED = 4
 
 export interface TruePriceBreakdown {
   days: number
   rateLabel: 'daily' | 'weekly' | 'monthly'
   baseTotal: number
-  deliveryFee: number
-  total: number                  // baseTotal + deliveryFee — kiralamada ödenen
-  depositBlockAED: number        // bloke edilir, iade edilir (0 = depozitosuz)
-  insuranceIncluded: boolean
-  insuranceExcessAED: number
-  kmIncludedTotal: number
-  extraKmFeeAED: number
-  salikNoteAED: number           // geçiş başına, sonradan faturalanır
+  /** Kiralama bedeli — sağlayıcı fiyat listesinden, doğrulanmış. */
+  total: number
+  /** Araç verisinden geliyor, doğrulanmış. */
+  depositBlockAED: number
+  salikNoteAED: number
+  /** ↓ Ücret matrisinden türeyenler — teyit yoksa null, gösterilmez. */
+  feesVerified: boolean
+  deliveryFee: number | null
+  insuranceIncluded: boolean | null
+  insuranceExcessAED: number | null
+  kmIncludedTotal: number | null
+  extraKmFeeAED: number | null
 }
 
 export function computeTruePrice(car: Car, days: number): TruePriceBreakdown {
-  const fees = PROVIDER_FEES[car.providerId] ?? PROVIDER_FEES['4hire']
+  const fees = verifiedFees(car.providerId)
   const d = Math.max(1, Math.round(days))
 
   let baseTotal: number
@@ -54,19 +78,20 @@ export function computeTruePrice(car: Car, days: number): TruePriceBreakdown {
     baseTotal = car.dailyPrice * d
   }
 
-  const deliveryFee = d >= fees.minDaysForFreeDelivery ? 0 : fees.deliveryFeeAED
+  const deliveryFee = fees ? (d >= fees.minDaysForFreeDelivery ? 0 : fees.deliveryFeeAED) : null
 
   return {
     days: d,
     rateLabel,
     baseTotal,
-    deliveryFee,
-    total: baseTotal + deliveryFee,
+    total: baseTotal + (deliveryFee ?? 0),
     depositBlockAED: car.depositType === 'no-deposit' ? 0 : (car.depositAmount ?? 0),
-    insuranceIncluded: fees.insuranceIncluded,
-    insuranceExcessAED: fees.insuranceExcessAED,
-    kmIncludedTotal: fees.kmLimitDaily * d,
-    extraKmFeeAED: fees.extraKmFeeAED,
     salikNoteAED: SALIK_PER_CROSSING_AED,
+    feesVerified: Boolean(fees),
+    deliveryFee,
+    insuranceIncluded: fees ? fees.insuranceIncluded : null,
+    insuranceExcessAED: fees ? fees.insuranceExcessAED : null,
+    kmIncludedTotal: fees ? fees.kmLimitDaily * d : null,
+    extraKmFeeAED: fees ? fees.extraKmFeeAED : null,
   }
 }

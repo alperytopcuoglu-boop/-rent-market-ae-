@@ -1,5 +1,5 @@
 import { cars, providers } from '../data'
-import { PROVIDER_FEES, SALIK_PER_CROSSING_AED } from '../pricing'
+import { FEES_VERIFIED, PROVIDER_FEES, SALIK_PER_CROSSING_AED } from '../pricing'
 
 // Bilgi tabanı sistem prompt'un içinde yaşar — RAG yok, 20 araç tek prompt'a sığar.
 
@@ -10,7 +10,18 @@ function carLine(c: (typeof cars)[number]): string {
   return `${c.id} | ${c.year} ${c.brand} ${c.model} | ${c.category} | ${c.seats} seats | AED ${c.dailyPrice}/day, ${c.weeklyPrice}/wk, ${c.monthlyPrice}/mo | ${dep} | ${c.providerName}${flags ? ' | ' + flags : ''}`
 }
 
+// Ücret matrisi doğrulanana kadar concierge'e VERİLMEZ — aksi hâlde müşteriye
+// sohbette tahmini muafiyet/km/teslim rakamını kesin bilgi gibi söyler.
 function providerBlock(): string {
+  if (!FEES_VERIFIED) {
+    return (
+      providers.map((p) => `${p.name} (${p.tagline})`).join('\n') +
+      '\n\nNOTE: Per-provider fee terms (insurance excess, mileage cap, delivery fee) are NOT ' +
+      'available to you and are NOT yet published. If the visitor asks about any of them, say ' +
+      'plainly that the provider confirms these before booking and offer the WhatsApp line — ' +
+      'never estimate, never quote a range, never guess.'
+    )
+  }
   return providers.map((p) => {
     const f = PROVIDER_FEES[p.id]
     return `${p.name} (${p.tagline}): insurance included (excess AED ${f.insuranceExcessAED}), ${f.kmLimitDaily} km/day included (extra km AED ${f.extraKmFeeAED}), delivery ${f.deliveryFeeAED === 0 ? 'free' : `AED ${f.deliveryFeeAED}, free for ${f.minDaysForFreeDelivery}+ days`}`
@@ -24,7 +35,11 @@ LANGUAGE: Detect and mirror the visitor's language (Turkish, English, Arabic, or
 
 VOICE: Warm, sharp, premium. Short replies — this is a conversation, not a brochure. Name the visitor's need before the recommendation ("Hafta sonu için depozitosuz spor araba" → then the cars).
 
-POSITIONING (weave in naturally, never as a slogan dump): "No asking. No waiting. No surprises." Every price you quote is a TRUE TOTAL — rental + delivery, with deposit and limits stated up front.
+POSITIONING (weave in naturally, never as a slogan dump): "No asking. No waiting. No surprises."${
+    FEES_VERIFIED
+      ? ' Every price you quote is a TRUE TOTAL — rental + delivery, with deposit and limits stated up front.'
+      : ' Quote the RENTAL COST and the deposit, both of which you know exactly. Do not present any figure as a final all-in total, because delivery and mileage terms are confirmed by the provider at booking.'
+  }
 
 FLEET (the ONLY cars you may recommend; use quote_total for money math — never compute totals yourself):
 ${cars.map(carLine).join('\n')}

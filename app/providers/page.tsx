@@ -2,12 +2,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import { providers } from '@/lib/data'
+import { FEES_VERIFIED } from '@/lib/pricing'
 import { getProviderStats, providerHref } from '@/lib/providers'
 
 export const metadata: Metadata = {
-  title: 'Car Rental Companies in Dubai — 5 Verified Providers Compared | Rent Market AE',
+  title: 'Car Rental Companies in Dubai Compared — Rates & Deposits | Rent Market AE',
   description:
-    'Compare Dubai car rental companies side by side: insurance excess, mileage limits, delivery fees and deposits. 5 verified providers, true total pricing, no hidden costs.',
+    'Compare 5 verified Dubai car rental companies side by side: fleet, daily rates and which ones block nothing on your card. One request, five offers, no deposit-waiver fees.',
   alternates: { canonical: '/providers' },
 }
 
@@ -61,10 +62,9 @@ export default function ProvidersPage() {
             Car rental companies in Dubai, compared
           </h1>
           <p className="text-stone-500 text-[13px] md:text-sm leading-relaxed mt-4">
-            We work with 5 verified rental companies. Every one of them publishes what they
-            actually charge — insurance excess, mileage caps, delivery, deposit — so the price you
-            see is the price you pay. Compare them below, or send one request and let them compete
-            for your booking.
+            We work with 5 verified rental companies. Compare their fleets and rates below — and
+            note which ones block nothing on your card, with no deposit-waiver fee to get there.
+            Or send one request and let all five compete for your booking.
           </p>
           <Link
             href="/request"
@@ -74,22 +74,28 @@ export default function ProvidersPage() {
           </Link>
         </header>
 
-        {/* Karşılaştırma tablosu — masaüstü */}
+        {/* Karşılaştırma tablosu — masaüstü.
+            Ücret kolonları (muafiyet/km/teslim) yalnızca sağlayıcı teyidi geldiğinde çıkar. */}
         <section className="mt-10 hidden md:block">
           <div className="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-stone-100 bg-stone-50/60">
-                  {['Provider', 'Fleet', 'From', 'Insurance excess', 'Mileage / day', 'Delivery', ''].map(
-                    (h) => (
-                      <th
-                        key={h}
-                        className="text-[10px] font-black text-stone-400 uppercase tracking-widest px-5 py-3.5"
-                      >
-                        {h}
-                      </th>
-                    )
-                  )}
+                  {[
+                    'Provider',
+                    'Fleet',
+                    'From',
+                    'Deposit-free cars',
+                    ...(FEES_VERIFIED ? ['Insurance excess', 'Mileage / day', 'Delivery'] : []),
+                    '',
+                  ].map((h, i) => (
+                    <th
+                      key={h || `sp-${i}`}
+                      className="text-[10px] font-black text-stone-400 uppercase tracking-widest px-5 py-3.5"
+                    >
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -115,19 +121,34 @@ export default function ProvidersPage() {
                     <td className="px-5 py-4 font-display font-bold text-stone-900 text-[13px] whitespace-nowrap">
                       AED {stats.fromPrice.toLocaleString('en-US')}
                     </td>
-                    <td className="px-5 py-4 text-[13px] text-stone-600 whitespace-nowrap">
-                      AED {stats.fees.insuranceExcessAED.toLocaleString('en-US')}
-                    </td>
-                    <td className="px-5 py-4 text-[13px] text-stone-600 whitespace-nowrap">
-                      {stats.fees.kmLimitDaily} km
-                    </td>
                     <td className="px-5 py-4 text-[13px] whitespace-nowrap">
-                      {stats.fees.deliveryFeeAED === 0 ? (
-                        <span className="text-emerald-600 font-bold">Free</span>
+                      {stats.noDepositCount === stats.carCount ? (
+                        <span className="text-emerald-600 font-bold">All {stats.carCount}</span>
+                      ) : stats.noDepositCount > 0 ? (
+                        <span className="text-emerald-600 font-bold">
+                          {stats.noDepositCount} of {stats.carCount}
+                        </span>
                       ) : (
-                        <span className="text-stone-600">AED {stats.fees.deliveryFeeAED}</span>
+                        <span className="text-stone-400">None</span>
                       )}
                     </td>
+                    {FEES_VERIFIED && stats.fees && (
+                      <>
+                        <td className="px-5 py-4 text-[13px] text-stone-600 whitespace-nowrap">
+                          AED {stats.fees.insuranceExcessAED.toLocaleString('en-US')}
+                        </td>
+                        <td className="px-5 py-4 text-[13px] text-stone-600 whitespace-nowrap">
+                          {stats.fees.kmLimitDaily} km
+                        </td>
+                        <td className="px-5 py-4 text-[13px] whitespace-nowrap">
+                          {stats.fees.deliveryFeeAED === 0 ? (
+                            <span className="text-emerald-600 font-bold">Free</span>
+                          ) : (
+                            <span className="text-stone-600">AED {stats.fees.deliveryFeeAED}</span>
+                          )}
+                        </td>
+                      </>
+                    )}
                     <td className="px-5 py-4 text-right">
                       <Link
                         href={providerHref(provider)}
@@ -142,8 +163,9 @@ export default function ProvidersPage() {
             </table>
           </div>
           <p className="text-[11px] text-stone-400 mt-3">
-            Lower insurance excess means less liability if something goes wrong. Higher mileage
-            means more freedom on long drives.
+            {FEES_VERIFIED
+              ? 'Lower insurance excess means less liability if something goes wrong. Higher mileage means more freedom on long drives.'
+              : 'A deposit-free car blocks nothing on your card — and none of these providers charge a deposit-waiver fee to get there. Insurance excess, mileage and delivery terms are confirmed by the provider before you book.'}
           </p>
         </section>
 
@@ -179,15 +201,27 @@ export default function ProvidersPage() {
                   <p className="text-[12px] font-bold text-stone-700 mt-0.5">{stats.carCount} cars</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-stone-400 uppercase tracking-wide font-bold">Excess</p>
+                  <p className="text-[10px] text-stone-400 uppercase tracking-wide font-bold">
+                    Deposit-free
+                  </p>
                   <p className="text-[12px] font-bold text-stone-700 mt-0.5">
-                    AED {stats.fees.insuranceExcessAED.toLocaleString('en-US')}
+                    {stats.noDepositCount === stats.carCount
+                      ? `All ${stats.carCount}`
+                      : stats.noDepositCount > 0
+                        ? `${stats.noDepositCount} of ${stats.carCount}`
+                        : 'None'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-stone-400 uppercase tracking-wide font-bold">Delivery</p>
+                  <p className="text-[10px] text-stone-400 uppercase tracking-wide font-bold">
+                    {FEES_VERIFIED && stats.fees ? 'Excess' : 'Rating'}
+                  </p>
                   <p className="text-[12px] font-bold text-stone-700 mt-0.5">
-                    {stats.fees.deliveryFeeAED === 0 ? 'Free' : `AED ${stats.fees.deliveryFeeAED}`}
+                    {FEES_VERIFIED && stats.fees
+                      ? `AED ${stats.fees.insuranceExcessAED.toLocaleString('en-US')}`
+                      : stats.rating
+                        ? stats.rating.toFixed(1)
+                        : '—'}
                   </p>
                 </div>
               </div>

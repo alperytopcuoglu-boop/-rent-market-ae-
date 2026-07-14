@@ -1,6 +1,6 @@
 import { Provider, Car } from './types'
 import { providers, cars } from './data'
-import { PROVIDER_FEES, ProviderFees } from './pricing'
+import { ProviderFees, verifiedFees } from './pricing'
 
 // SEO slug: provider adı (ör. "4 HIRE" → 4-hire)
 export function providerSlug(p: Provider): string {
@@ -30,7 +30,8 @@ export interface ProviderStats {
   reviewCount: number
   noDepositCount: number
   categories: string[]
-  fees: ProviderFees
+  /** Doğrulanmamışsa undefined — sayfa hiçbir ücret rakamı göstermez. */
+  fees: ProviderFees | undefined
 }
 
 export function getProviderStats(p: Provider): ProviderStats {
@@ -51,6 +52,6 @@ export function getProviderStats(p: Provider): ProviderStats {
     reviewCount,
     noDepositCount: fleet.filter((c) => c.depositType === 'no-deposit').length,
     categories: Array.from(new Set(fleet.map((c) => c.category))),
-    fees: PROVIDER_FEES[p.id] ?? PROVIDER_FEES['4hire'],
+    fees: verifiedFees(p.id),
   }
 }
